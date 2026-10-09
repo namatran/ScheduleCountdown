@@ -4,17 +4,19 @@ A menu bar app for Klein High that counts down to the next bell. It knows the no
 
 - The menu bar shows the countdown (`12:03`); before school, after school and on days off it shows a bell.
 - Click it for the current period (or Passing), today's blocks for your lunch, the lunch picker, and today's schedule name.
-- Settings (⌘,) has your lunch, launch at login, and "Show countdown outside school hours".
+- Settings (⌘,) has your lunch, launch at login, "Show countdown outside school hours", your app version and What's New.
 
 ## Install
 
-1. Download `ScheduleCountdown.zip` and unzip it.
-2. Drag `ScheduleCountdown.app` into Applications.
-3. Open it. The first time, macOS says it can't verify the developer: open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**. You only do this once.
+1. Download `ScheduleCountdown.dmg` from the [latest release](https://github.com/namatran/ScheduleCountdown/releases/latest) and open it.
+2. Drag ScheduleCountdown onto the Applications folder next to it.
+3. Open it from Applications. The first time, macOS says it can't verify the developer: open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**. You only do this once.
 
 Requires macOS 14 or later.
 
-After that the app updates itself: it checks once a day (or use **Check for App Updates…** in the menu) and asks before installing. Updates don't need "Open Anyway" again. Run it from Applications, not straight from Downloads: macOS runs apps opened from Downloads from a read-only copy, which can't be updated.
+After that the app updates itself. It checks when it opens and once a day, and asks before installing; until you do, the menu shows **Update Available**. Updates don't need "Open Anyway" again.
+
+It has to run from Applications to update: macOS runs apps opened from a disk image or Downloads from a read-only copy. If you open it from anywhere else, it offers to move itself.
 
 ## How schedules work
 
@@ -40,7 +42,7 @@ Needs Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install
 ```sh
 xcodegen generate && open ScheduleCountdown.xcodeproj   # work in Xcode
 scripts/test.sh                                         # run the unit tests
-scripts/package.sh                                      # build dist/ScheduleCountdown.zip
+scripts/package.sh                                      # build dist/ScheduleCountdown.zip and .dmg
 ```
 
 Add new files on disk (not through Xcode's "New File"), then rerun `xcodegen generate`.
@@ -52,16 +54,20 @@ Debugging helpers (environment variables, set in the Xcode scheme or on the comm
 
 ## Releasing
 
-App updates use [Sparkle](https://sparkle-project.org). Each GitHub Release carries the zip and `appcast.xml`, and the app reads the feed from the latest release. Ad-hoc signing is enough: Sparkle checks each update against the EdDSA public key in `project.yml` (`SUPublicEDKey`) and clears the quarantine flag, so Gatekeeper doesn't prompt.
+App updates use [Sparkle](https://sparkle-project.org). Each GitHub Release carries the dmg (for new installs), the zip (what updates download) and `appcast.xml`, and the app reads the feed from the latest release. Ad-hoc signing is enough: Sparkle checks each update against the EdDSA public key in `project.yml` (`SUPublicEDKey`) and clears the quarantine flag, so Gatekeeper doesn't prompt.
 
 **Signing key.** The private key lives in the login Keychain of the Mac you release from (created once with `build/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys`). Never commit it. Keep a backup in a password manager: export it with `generate_keys -x sparkle_private_key`, store it, delete the file, and on a new Mac import it with `generate_keys -f sparkle_private_key`. If the key is lost, installed copies can't update anymore.
 
 **Release.**
 
 ```sh
-scripts/release.sh 1.2.0 --notes notes.txt   # bump, package, sign, write dist/appcast.xml, commit the bump
+scripts/release.sh 1.2.0             # first run: drafts a 1.2.0 section in CHANGELOG.md, then stops
+                                     # rewrite it for students, then run it again:
+scripts/release.sh 1.2.0             # dates the changelog, bumps, packages, signs, writes dist/appcast.xml, commits
 git push
-scripts/release.sh --publish 1.2.0           # asks, then creates the GitHub Release
+scripts/release.sh --publish 1.2.0   # asks, then creates the GitHub Release
 ```
 
-`--notes` is optional plain text shown in the update window. The bump only increases `CURRENT_PROJECT_VERSION`, which is the number Sparkle compares.
+The notes come from the version's section in [`CHANGELOG.md`](CHANGELOG.md): they show in the update window, on the GitHub Release, and in the app's What's New. Keep them short and about what students will notice. Add `--critical` for a fix everyone must get: Sparkle then hides "Skip This Version" and "Remind Me Later". The bump increases `CURRENT_PROJECT_VERSION`, which is the number Sparkle compares.
+
+`package.sh` asks Finder to lay out the disk image window (icon positions and the arrow background), so the first run may ask to let Terminal control Finder. Without that permission the dmg still works, just without the layout.
