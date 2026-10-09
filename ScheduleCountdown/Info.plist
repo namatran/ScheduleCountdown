@@ -26,6 +26,12 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/namatran/ScheduleCountdown/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>t1H0D/iH7ZbV3Tmidu/ERxWwgVyzUTRrEroC1B372hg=</string>
 	<key>ScheduleRemoteURL</key>
 	<string>https://raw.githubusercontent.com/namatran/ScheduleCountdown/main/ScheduleCountdown/Resources/schedule.json</string>
 </dict>
