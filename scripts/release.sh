@@ -104,7 +104,13 @@ prepare() {
 
     # GitHub shows the Markdown; Sparkle's window shows plain text, so use • bullets there.
     { changelog_section "$version"
-      printf '\n---\nNew install? Download **ScheduleCountdown.dmg** below and drag the app into Applications.\n'
+      cat <<EOF
+
+---
+**New install?** Download **ScheduleCountdown.dmg** below, open it, and drag the app into Applications. The first time you open it, macOS blocks it because the app isn't from a paid Apple developer account; that's expected. Click **Done**, then go to **System Settings → Privacy & Security** and click **Open Anyway**. You only do this once, and updates install on their own after that.
+
+<img src="https://raw.githubusercontent.com/$repo/main/docs/images/open-anyway.png" width="600" alt="Privacy & Security settings with the Open Anyway button for ScheduleCountdown">
+EOF
     } > "$notes"
     local plain_notes
     plain_notes=$(changelog_section "$version" | awk '
