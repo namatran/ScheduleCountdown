@@ -18,6 +18,12 @@ struct ClockTime: Hashable, Comparable, Codable {
     }
 
     var minutesSinceMidnight: Int { hour * 60 + minute }
+
+    /// Shifted by some minutes, clamped to the same day.
+    func adding(minutes: Int) -> ClockTime {
+        let total = min(max(minutesSinceMidnight + minutes, 0), 23 * 60 + 59)
+        return ClockTime(total / 60, total % 60)
+    }
     var string: String { String(format: "%02d:%02d", hour, minute) }
 
     /// "7:15", "12:53", "1:41" — how the school writes times.
