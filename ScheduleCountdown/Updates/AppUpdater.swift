@@ -24,12 +24,29 @@ final class AppUpdater: NSObject, SPUStandardUserDriverDelegate {
     }
 
     func check() {
-        // Menu bar apps aren't active by default, so Sparkle's window would open behind others.
-        NSApp.activate(ignoringOtherApps: true)
         controller.checkForUpdates(nil)
+    }
+
+    /// Menu bar apps aren't active, and macOS 14+ may ignore `activate()` from them,
+    /// so Sparkle's windows would open behind others. Force them to the front.
+    private func bringWindowsForward() {
+        NSApp.activate()
+        DispatchQueue.main.async {
+            NSApp.windows.filter(\.isVisible).forEach { $0.orderFrontRegardless() }
+        }
     }
 
     // A menu bar app has no Dock icon to badge, so let Sparkle use its gentle reminders
     // for background-found updates instead of warning about it.
     var supportsGentleScheduledUpdateReminders: Bool { true }
+
+    func standardUserDriverWillHandleShowingUpdate(
+        _ handleShowingUpdate: Bool, forUpdate update: SUAppcastItem, state: SPUUserUpdateState
+    ) {
+        if handleShowingUpdate { bringWindowsForward() }
+    }
+
+    func standardUserDriverWillShowModalAlert() {
+        bringWindowsForward()
+    }
 }
