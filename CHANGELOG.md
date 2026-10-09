@@ -2,7 +2,7 @@
 
 What's new in each version, newest first. The app shows this under Settings → What's New, and `scripts/release.sh` uses a version's section as its release notes, so write for students: a few short, plain bullets about changes they'll notice. `release.sh` adds the date.
 
-## 1.1.0
+## 1.1.0 — 2026-10-09
 
 - The app now updates itself. When a new version is ready, you'll get a message and an "Update Available" line in the menu.
 - Settings shows your app version, whether there's an update, and this list of what's new.
