@@ -6,6 +6,29 @@ struct GeneralTab: View {
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var launchAtLoginError: String?
     @State private var exportError: String?
+    @State private var checkResult: ScheduleStore.CheckResult?
+
+    private var showCheckResult: Binding<Bool> {
+        Binding(get: { checkResult != nil }, set: { if !$0 { checkResult = nil } })
+    }
+
+    private var checkAlertTitle: String {
+        switch checkResult {
+        case .updated: "Schedule updated"
+        case .failed: "Couldn't check for updates"
+        default: "You're up to date!"
+        }
+    }
+
+    private var checkAlertMessage: String {
+        switch checkResult {
+        case .updated where state.editorMode:
+            "Downloaded the latest master schedule. Editor mode is on, so this Mac still shows your draft."
+        case .updated: "Downloaded the latest master schedule."
+        case .failed(let error): "\(error) The last downloaded schedule is still in use."
+        default: "You have the latest master schedule."
+        }
+    }
 
     var body: some View {
         @Bindable var state = state
@@ -39,10 +62,15 @@ struct GeneralTab: View {
                     Text("No online schedule is set up yet, so the built-in schedule is used.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
-                Button("Check for Updates") {
-                    Task { await state.store.checkForUpdates() }
+                Button(state.store.isChecking ? "Checking…" : "Check for Updates") {
+                    Task { checkResult = await state.store.checkForUpdates() }
                 }
                 .disabled(state.store.remoteURL == nil || state.store.isChecking)
+                .alert(checkAlertTitle, isPresented: showCheckResult) {
+                    Button("OK") {}
+                } message: {
+                    Text(checkAlertMessage)
+                }
             }
 
             if state.revealEditorToggle || state.editorMode {

@@ -68,10 +68,18 @@ final class ScheduleStore {
     }
 
     /// Downloads the master file. On any failure the last good copy stays in use.
-    func checkForUpdates() async {
-        guard let remoteURL, !isChecking else { return }
+    enum CheckResult: Equatable {
+        case updated, upToDate
+        case failed(String)
+    }
+
+    /// Returns nil when no check ran (no remote URL, or one is already running).
+    @discardableResult
+    func checkForUpdates() async -> CheckResult? {
+        guard let remoteURL, !isChecking else { return nil }
         isChecking = true
         defer { isChecking = false }
+        let previous = published
         do {
             let request = URLRequest(url: remoteURL, cachePolicy: .reloadIgnoringLocalCacheData,
                                      timeoutInterval: 15)
@@ -88,6 +96,8 @@ final class ScheduleStore {
                 ?? error.localizedDescription
         }
         lastChecked = Date()
+        if let lastError { return .failed(lastError) }
+        return published == previous ? .upToDate : .updated
     }
 
     var draftHasChanges: Bool {

@@ -30,9 +30,10 @@ struct ScheduleStoreTests {
     @Test func downloadsAndCachesTheMaster() async throws {
         let remote = pepRallyTomorrow()
         let store = ScheduleStore(remoteURL: try remoteFile(remote), directory: directory)
-        await store.checkForUpdates()
+        #expect(await store.checkForUpdates() == .updated)
         #expect(store.lastError == nil)
         #expect(store.published == remote)
+        #expect(await store.checkForUpdates() == .upToDate)
 
         // A fresh launch with no network uses the cached copy.
         let offline = ScheduleStore(remoteURL: nil, directory: directory)
@@ -43,9 +44,16 @@ struct ScheduleStoreTests {
         let url = try remoteFile(MasterFile.bundled())
         try Data("not json".utf8).write(to: url)
         let store = ScheduleStore(remoteURL: url, directory: directory)
-        await store.checkForUpdates()
+        guard case .failed = await store.checkForUpdates() else {
+            Issue.record("expected the check to fail"); return
+        }
         #expect(store.lastError != nil)
         #expect(store.published == MasterFile.bundled())
+    }
+
+    @Test func skipsCheckWithoutRemote() async {
+        let store = ScheduleStore(remoteURL: nil, directory: directory)
+        #expect(await store.checkForUpdates() == nil)
     }
 
     @Test func draftPersistsAndCanBeDiscarded() {
