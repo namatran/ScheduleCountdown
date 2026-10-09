@@ -14,7 +14,7 @@ A menu bar app for Klein High that counts down to the next bell. It knows the no
 
    <img src="docs/images/not-opened.png" width="240" alt="“ScheduleCountdown” Not Opened: Apple could not verify it is free of malware">
 
-   That's expected. macOS shows this for any app whose developer doesn't pay Apple $99 a year for a signing certificate; it doesn't mean anything was found. Click **Done**, not Move to Trash.
+   That's expected. macOS shows this for any app whose developer doesn't pay Apple $99 a year for a signing certificate; it doesn't mean anything was found. Click **Done** (if there's also a Move to Trash button, don't click that one).
 4. Open **System Settings → Privacy & Security**, scroll down to **Security**, and click **Open Anyway** next to “ScheduleCountdown” was blocked. If macOS asks again, click **Open Anyway** and enter your Mac password or use Touch ID.
 
    <img src="docs/images/open-anyway.png" width="600" alt="Privacy & Security settings with the Open Anyway button for ScheduleCountdown">
