@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-08T00:00:00Z",
+  "defaultScheduleID": "normal",
+  "schedules": [
+    {
+      "id": "normal",
+      "name": "Normal",
+      "bells": [
+        { "name": "Release to 1st", "time": "07:09" }
+      ],
+      "blocks": [
+        { "name": "1st", "start": "07:15", "end": "08:03" },
+        { "name": "2nd", "start": "08:09", "end": "08:57" },
+        { "name": "3rd", "start": "09:03", "end": "09:51" },
+        { "name": "4th", "start": "09:57", "end": "10:45" },
+        { "name": "Advisory", "start": "10:51", "end": "11:22" },
+
+        { "name": "A Lunch", "start": "11:22", "end": "11:52", "dismiss": "11:47", "groups": ["A"] },
+        { "name": "5th", "start": "11:52", "end": "12:47", "groups": ["A"] },
+
+        { "name": "5th", "start": "11:28", "end": "11:52", "groups": ["B"] },
+        { "name": "B Lunch", "start": "11:52", "end": "12:22", "dismiss": "12:17", "groups": ["B"] },
+        { "name": "5th", "start": "12:22", "end": "12:47", "groups": ["B"] },
+
+        { "name": "5th", "start": "11:28", "end": "12:22", "groups": ["C"] },
+        { "name": "C Lunch", "start": "12:22", "end": "12:52", "dismiss": "12:47", "groups": ["C"] },
+
+        { "name": "6th", "start": "12:53", "end": "13:41" },
+        { "name": "7th", "start": "13:47", "end": "14:35" }
+      ]
+    },
+    {
+      "id": "jamboree",
+      "name": "Jamboree",
+      "bells": [
+        { "name": "Release to 1st", "time": "07:09" }
+      ],
+      "blocks": [
+        { "name": "1st", "start": "07:15", "end": "08:00" },
+        { "name": "2nd", "start": "08:06", "end": "08:51" },
+        { "name": "3rd", "start": "08:57", "end": "09:42" },
+        { "name": "4th", "start": "09:48", "end": "10:33" },
+
+        { "name": "A Lunch → Jamboree", "start": "10:33", "end": "11:16", "groups": ["A"] },
+        { "name": "5th", "start": "11:22", "end": "12:53", "groups": ["A"] },
+
+        { "name": "5th", "start": "10:39", "end": "11:22", "groups": ["B"] },
+        { "name": "B Lunch → Jamboree", "start": "11:22", "end": "12:05", "groups": ["B"] },
+        { "name": "5th", "start": "12:11", "end": "12:53", "groups": ["B"] },
+
+        { "name": "5th", "start": "10:39", "end": "12:11", "groups": ["C"] },
+        { "name": "C Lunch → Jamboree", "start": "12:11", "end": "12:53", "groups": ["C"] },
+
+        { "name": "6th", "start": "12:59", "end": "13:44" },
+        { "name": "7th", "start": "13:50", "end": "14:35" }
+      ]
+    },
+    {
+      "id": "pep-rally",
+      "name": "Pep Rally",
+      "bells": [
+        { "name": "Release to 1st", "time": "07:09" }
+      ],
+      "blocks": [
+        { "name": "1st", "start": "07:15", "end": "08:00" },
+        { "name": "2nd", "start": "08:06", "end": "08:51" },
+        { "name": "3rd", "start": "08:57", "end": "09:42" },
+        { "name": "4th", "start": "09:48", "end": "10:33" },
+        { "name": "Transition to Field", "start": "10:33", "end": "10:48" },
+        { "name": "Pep Rally", "start": "10:48", "end": "11:18" },
+
+        { "name": "A Lunch", "start": "11:28", "end": "11:58", "dismiss": "11:53", "groups": ["A"] },
+        { "name": "5th", "start": "11:58", "end": "12:53", "groups": ["A"] },
+
+        { "name": "5th", "start": "11:28", "end": "11:58", "groups": ["B"] },
+        { "name": "B Lunch", "start": "11:58", "end": "12:28", "dismiss": "12:23", "groups": ["B"] },
+        { "name": "5th", "start": "12:28", "end": "12:53", "groups": ["B"] },
+
+        { "name": "5th", "start": "11:28", "end": "12:28", "groups": ["C"] },
+        { "name": "C Lunch", "start": "12:28", "end": "12:58", "dismiss": "12:53", "groups": ["C"] },
+
+        { "name": "6th", "start": "12:59", "end": "13:44" },
+        { "name": "7th", "start": "13:50", "end": "14:35" }
+      ]
+    }
+  ],
+  "calendar": []
+}
