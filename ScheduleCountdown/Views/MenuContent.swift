@@ -40,7 +40,7 @@ struct MenuContent: View {
         Text(status.schedule.map { "\($0.name) Schedule" } ?? "No School Today")
 
         Divider()
-        Button(state.store.isChecking ? "Checking…" : "Check for Updates") {
+        Button(state.store.isChecking ? "Checking…" : "Check for Schedule Updates") {
             Task { await state.store.checkForUpdates() }
         }
         .disabled(state.store.remoteURL == nil || state.store.isChecking)

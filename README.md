@@ -31,7 +31,7 @@ The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` i
 1. Hold **⌥ Option** while clicking **Settings…** and turn on **Editor mode**. The Schedules and Calendar tabs appear, and this Mac follows your draft.
 2. Edit schedules (Duplicate is handy for a new alternate schedule) and assign days in Calendar.
 3. Click **Export Master File…** and save over `ScheduleCountdown/Resources/schedule.json`.
-4. Commit and push. Everyone's app picks it up within 6 hours (or on **Check for Updates**).
+4. Commit and push. Everyone's app picks it up within 6 hours (or on **Check for Schedule Updates**).
 
 ## Development
 

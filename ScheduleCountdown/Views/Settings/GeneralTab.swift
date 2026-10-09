@@ -62,7 +62,7 @@ struct GeneralTab: View {
                     Text("No online schedule is set up yet, so the built-in schedule is used.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
-                Button(state.store.isChecking ? "Checking…" : "Check for Updates") {
+                Button(state.store.isChecking ? "Checking…" : "Check for Schedule Updates") {
                     Task { checkResult = await state.store.checkForUpdates() }
                 }
                 .disabled(state.store.remoteURL == nil || state.store.isChecking)
