@@ -58,6 +58,29 @@ struct Schedule: Codable, Equatable, Identifiable {
     func blocks(for lunch: LunchGroup) -> [Block] {
         blocks.filter { $0.groups.contains(lunch) }.sorted { $0.start < $1.start }
     }
+
+    /// Mistakes worth flagging in the editor, e.g. overlapping blocks for the same lunch.
+    func problems() -> [String] {
+        var problems: [String] = []
+        for block in blocks {
+            if block.end <= block.start {
+                problems.append("\(block.name) (\(block.start.display)) ends before it starts.")
+            }
+            if let dismiss = block.dismiss, !(block.start < dismiss && dismiss <= block.end) {
+                problems.append("\(block.name) (\(block.start.display)) dismisses outside its own time.")
+            }
+            if block.groups.isEmpty {
+                problems.append("\(block.name) (\(block.start.display)) isn't assigned to any lunch.")
+            }
+        }
+        for lunch in LunchGroup.allCases {
+            let sorted = blocks(for: lunch)
+            for (earlier, later) in zip(sorted, sorted.dropFirst()) where earlier.end > later.start {
+                problems.append("\(lunch.title): \(earlier.name) overlaps \(later.name).")
+            }
+        }
+        return problems
+    }
 }
 
 struct Bell: Codable, Equatable, Identifiable {

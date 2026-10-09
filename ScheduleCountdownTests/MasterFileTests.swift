@@ -46,6 +46,26 @@ struct MasterFileTests {
         #expect(ClockTime(13, 41).display == "1:41")
     }
 
+    @Test func seedSchedulesHaveNoProblems() {
+        for schedule in MasterFile.bundled().schedules {
+            #expect(schedule.problems().isEmpty, "\(schedule.name): \(schedule.problems())")
+        }
+    }
+
+    @Test func flagsOverlapsAndBadTimes() {
+        let schedule = Schedule(id: "x", name: "X", blocks: [
+            Block(name: "1st", start: ClockTime(8, 0), end: ClockTime(9, 0)),
+            Block(name: "2nd", start: ClockTime(8, 30), end: ClockTime(9, 30), groups: [.b]),
+            Block(name: "3rd", start: ClockTime(10, 0), end: ClockTime(9, 50), groups: [.c]),
+            Block(name: "Lunch", start: ClockTime(11, 0), end: ClockTime(11, 30), dismiss: ClockTime(11, 40), groups: [.a]),
+        ])
+        let problems = schedule.problems()
+        #expect(problems.contains("B Lunch: 1st overlaps 2nd."))
+        #expect(problems.contains { $0.hasPrefix("3rd") && $0.contains("ends before") })
+        #expect(problems.contains { $0.hasPrefix("Lunch") && $0.contains("dismisses outside") })
+        #expect(!problems.contains { $0.hasPrefix("A Lunch") })
+    }
+
     @Test func blocksForLunchAreSortedAndFiltered() throws {
         let normal = try #require(MasterFile.bundled().schedule(id: "normal"))
         let names = normal.blocks(for: .b).map(\.name)
