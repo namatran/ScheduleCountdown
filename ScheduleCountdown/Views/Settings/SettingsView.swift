@@ -10,6 +10,8 @@ struct SettingsView: View {
             if state.editorMode {
                 SchedulesTab()
                     .tabItem { Label("Schedules", systemImage: "list.bullet.rectangle") }
+                CalendarTab()
+                    .tabItem { Label("Calendar", systemImage: "calendar") }
             }
         }
     }
