@@ -14,6 +14,8 @@ A menu bar app for Klein High that counts down to the next bell. It knows the no
 
 Requires macOS 14 or later.
 
+After that the app updates itself: it checks once a day (or use **Check for App Updates…** in the menu) and asks before installing. Updates don't need "Open Anyway" again. Run it from Applications, not straight from Downloads: macOS runs apps opened from Downloads from a read-only copy, which can't be updated.
+
 ## How schedules work
 
 Everything lives in one file, [`ScheduleCountdown/Resources/schedule.json`](ScheduleCountdown/Resources/schedule.json):
@@ -47,3 +49,19 @@ Debugging helpers (environment variables, set in the Xcode scheme or on the comm
 
 - `SC_FAKE_NOW="2026-10-09 11:45"`: run as if it were that moment (the clock keeps ticking from there).
 - `SC_REMOTE_URL=file:///path/to/schedule.json`: test downloading without GitHub.
+
+## Releasing
+
+App updates use [Sparkle](https://sparkle-project.org). Each GitHub Release carries the zip and `appcast.xml`, and the app reads the feed from the latest release. Ad-hoc signing is enough: Sparkle checks each update against the EdDSA public key in `project.yml` (`SUPublicEDKey`) and clears the quarantine flag, so Gatekeeper doesn't prompt.
+
+**Signing key.** The private key lives in the login Keychain of the Mac you release from (created once with `build/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys`). Never commit it. Keep a backup in a password manager: export it with `generate_keys -x sparkle_private_key`, store it, delete the file, and on a new Mac import it with `generate_keys -f sparkle_private_key`. If the key is lost, installed copies can't update anymore.
+
+**Release.**
+
+```sh
+scripts/release.sh 1.2.0 --notes notes.txt   # bump, package, sign, write dist/appcast.xml, commit the bump
+git push
+scripts/release.sh --publish 1.2.0           # asks, then creates the GitHub Release
+```
+
+`--notes` is optional plain text shown in the update window. The bump only increases `CURRENT_PROJECT_VERSION`, which is the number Sparkle compares.
