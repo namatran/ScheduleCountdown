@@ -15,6 +15,7 @@ struct MenuBarLabel: View {
 /// The dropdown: current period → today's blocks → lunch picker → schedule name → app actions.
 struct MenuContent: View {
     @Environment(AppState.self) private var state
+    @Environment(AppUpdater.self) private var updater
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
@@ -43,6 +44,8 @@ struct MenuContent: View {
             Task { await state.store.checkForUpdates() }
         }
         .disabled(state.store.remoteURL == nil || state.store.isChecking)
+        Button("Check for App Updates…") { updater.check() }
+            .disabled(!updater.canCheck)
         Button("Settings…", action: showSettings)
             .keyboardShortcut(",")
         Button("Quit ScheduleCountdown") { NSApp.terminate(nil) }
