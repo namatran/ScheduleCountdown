@@ -29,6 +29,14 @@ struct MenuContent: View {
                 Label("Schedule may be out of date", systemImage: "exclamationmark.triangle")
             }
             .disabled(state.store.isChecking)
+        }
+        if let version = updater.availableVersion {
+            Button { updater.check() } label: {
+                Label("Update Available: \(version)…", systemImage: "arrow.down.circle")
+            }
+            .disabled(!updater.canCheck)
+        }
+        if state.scheduleMayBeStale || updater.availableVersion != nil {
             Divider()
         }
 
@@ -54,8 +62,10 @@ struct MenuContent: View {
             Task { await state.store.checkForUpdates() }
         }
         .disabled(state.store.remoteURL == nil || state.store.isChecking)
-        Button("Check for App Updates…") { updater.check() }
-            .disabled(!updater.canCheck)
+        Button(updater.availableVersion.map { "Install App Update \($0)…" } ?? "Check for App Updates…") {
+            updater.check()
+        }
+        .disabled(!updater.canCheck)
         Button("Settings…", action: showSettings)
             .keyboardShortcut(",")
         Button("Quit ScheduleCountdown") { NSApp.terminate(nil) }
