@@ -1,0 +1,59 @@
+name: ScheduleCountdown
+options:
+  bundleIdPrefix: com.namtran
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+targets:
+  ScheduleCountdown:
+    type: application
+    platform: macOS
+    sources:
+      - ScheduleCountdown
+    info:
+      path: ScheduleCountdown/Info.plist
+      properties:
+        CFBundleDisplayName: ScheduleCountdown
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.productivity
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        # Menu bar only: no Dock icon, no app menu.
+        LSUIElement: true
+        # Raw URL of the master schedule.json. Empty = use the bundled copy only.
+        ScheduleRemoteURL: ""
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.namtran.ScheduleCountdown
+        ENABLE_HARDENED_RUNTIME: NO
+  ScheduleCountdownTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - ScheduleCountdownTests
+    dependencies:
+      - target: ScheduleCountdown
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.namtran.ScheduleCountdownTests
+schemes:
+  ScheduleCountdown:
+    build:
+      targets:
+        ScheduleCountdown: all
+        ScheduleCountdownTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - ScheduleCountdownTests
