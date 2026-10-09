@@ -9,7 +9,15 @@ xcodebuild -project ScheduleCountdown.xcodeproj -scheme ScheduleCountdown \
 
 app=build/Build/Products/Release/ScheduleCountdown.app
 # No paid developer account: ad-hoc sign so macOS will run it after a one-time "Open Anyway".
-codesign --force --deep --sign - "$app"
+# Sign inside-out instead of --deep, which would strip the entitlements of Sparkle's helpers.
+sign() { codesign --force --sign - --preserve-metadata=entitlements "$@"; }
+sparkle="$app/Contents/Frameworks/Sparkle.framework/Versions/B"
+sign "$sparkle"/XPCServices/*.xpc
+sign "$sparkle/Autoupdate"
+sign "$sparkle/Updater.app"
+sign "$app/Contents/Frameworks/Sparkle.framework"
+sign "$app"
+codesign --verify --deep --strict "$app"
 
 mkdir -p dist
 rm -f dist/ScheduleCountdown.zip
