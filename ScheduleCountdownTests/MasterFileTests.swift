@@ -7,7 +7,14 @@ struct MasterFileTests {
         let master = MasterFile.bundled()
         #expect(master.defaultScheduleID == "normal")
         #expect(master.schedules.map(\.id) == ["normal", "jamboree", "pep-rally"])
-        #expect(master.calendar.isEmpty)
+    }
+
+    @Test func bundledCalendarOnlyUsesKnownSchedules() {
+        let master = MasterFile.bundled()
+        for entry in master.calendar {
+            #expect(entry.start <= entry.end)
+            if let id = entry.scheduleID { #expect(master.schedule(id: id) != nil, "Unknown schedule \(id)") }
+        }
     }
 
     @Test func blocksWithoutGroupsAreShared() throws {
