@@ -11,7 +11,11 @@ struct ScheduleCountdownApp: App {
         // Don't spin up the clock or hit the network while hosting unit tests.
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
             state.start()
-            updater.start()
+            // After launch finishes, so the alert can show. Sparkle waits: it can't update
+            // a copy that's about to move.
+            DispatchQueue.main.async {
+                if !AppMover.moveIfNeeded() { updater.start() }
+            }
         }
         _state = State(initialValue: state)
         _updater = State(initialValue: updater)
