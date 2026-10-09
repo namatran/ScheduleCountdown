@@ -25,6 +25,8 @@ final class AppState {
     /// What the dropdown shows. Unlike `status`, it's only reassigned when it changes (at a bell,
     /// not every second), because re-rendering the menu rebuilds it and closes open submenus.
     private(set) var menuStatus = DayStatus()
+    /// Shown as a warning in the dropdown. Reassigned only when it flips, like `menuStatus`.
+    private(set) var scheduleMayBeStale = false
     /// Set for this launch when Settings is opened with ⌥ held, so the Editor mode switch appears.
     var revealEditorToggle = false
 
@@ -90,6 +92,9 @@ final class AppState {
     private func refreshMenuStatus() {
         let status = status
         if status != menuStatus { menuStatus = status }
+        // Real time, not the SC_FAKE_NOW clock: this is about when downloads happened.
+        let stale = store.mayBeStale()
+        if stale != scheduleMayBeStale { scheduleMayBeStale = stale }
     }
 
     /// Debug aid: `SC_FAKE_NOW="2026-10-09 11:45"` makes the app run as if it were that moment.

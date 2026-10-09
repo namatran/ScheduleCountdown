@@ -22,6 +22,16 @@ struct MenuContent: View {
         @Bindable var state = state
         let status = state.menuStatus
 
+        if state.scheduleMayBeStale {
+            Button {
+                Task { await state.store.checkForUpdates() }
+            } label: {
+                Label("Schedule may be out of date", systemImage: "exclamationmark.triangle")
+            }
+            .disabled(state.store.isChecking)
+            Divider()
+        }
+
         Text(headline(status))
 
         if !status.blocks.isEmpty {

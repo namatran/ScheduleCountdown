@@ -12,15 +12,20 @@ final class ScheduleStore {
         didSet { save(draft, to: draftURL) }
     }
     private(set) var lastChecked: Date?
+    /// When a download last succeeded, this launch or an earlier one (the cache's save time).
+    private(set) var lastDownloaded: Date?
     private(set) var lastError: String?
     private(set) var isChecking = false
 
     let remoteURL: URL?
     private let cacheURL: URL
     private let draftURL: URL
+    private let createdAt = Date()
     private var refreshTask: Task<Void, Never>?
 
     static let refreshInterval: TimeInterval = 6 * 3600
+    /// Downloads normally succeed every 6 hours, so a day without one means something's wrong.
+    static let staleAfter: TimeInterval = 24 * 3600
 
     init(remoteURL: URL? = ScheduleStore.configuredRemoteURL,
          directory: URL = ScheduleStore.defaultDirectory) {
@@ -32,6 +37,15 @@ final class ScheduleStore {
         let published = Self.load(cacheURL) ?? MasterFile.bundled()
         self.published = published
         self.draft = Self.load(draftURL) ?? published
+        lastDownloaded = (try? cacheURL.resourceValues(forKeys: [.contentModificationDateKey]))?
+            .contentModificationDate
+    }
+
+    /// True when downloads have been failing for a day: the schedule may have changed without
+    /// this Mac knowing. Counts from launch if nothing was ever downloaded.
+    func mayBeStale(at now: Date = Date()) -> Bool {
+        guard remoteURL != nil else { return false }
+        return now.timeIntervalSince(lastDownloaded ?? createdAt) > Self.staleAfter
     }
 
     /// `SC_REMOTE_URL` (for testing) or the `ScheduleRemoteURL` Info.plist key. Empty = offline only.
@@ -90,6 +104,7 @@ final class ScheduleStore {
             let master = try MasterFile.decode(data)
             published = master
             save(master, to: cacheURL)
+            lastDownloaded = Date()
             lastError = nil
         } catch {
             lastError = (error as? DecodingError).map { _ in "The master schedule file is invalid." }

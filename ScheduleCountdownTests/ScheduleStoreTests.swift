@@ -51,6 +51,39 @@ struct ScheduleStoreTests {
         #expect(store.published == MasterFile.bundled())
     }
 
+    @Test func staleAfterADayWithoutADownload() async throws {
+        let url = try remoteFile(MasterFile.bundled())
+        try Data("not json".utf8).write(to: url)
+        let store = ScheduleStore(remoteURL: url, directory: directory)
+        let dayLater = Date().addingTimeInterval(ScheduleStore.staleAfter + 60)
+        #expect(!store.mayBeStale())
+        #expect(store.mayBeStale(at: dayLater))
+
+        // Failing checks don't reset the clock; a successful one does.
+        await store.checkForUpdates()
+        #expect(store.mayBeStale(at: dayLater))
+        try MasterFile.bundled().encoded().write(to: url)
+        await store.checkForUpdates()
+        #expect(!store.mayBeStale(at: Date().addingTimeInterval(ScheduleStore.staleAfter - 60)))
+    }
+
+    @Test func staleClockSurvivesRelaunch() async throws {
+        let url = try remoteFile(MasterFile.bundled())
+        await ScheduleStore(remoteURL: url, directory: directory).checkForUpdates()
+
+        // Pretend that download was two days ago.
+        let cache = directory.appendingPathComponent("master-cache.json")
+        try FileManager.default.setAttributes(
+            [.modificationDate: Date().addingTimeInterval(-2 * ScheduleStore.staleAfter)],
+            ofItemAtPath: cache.path)
+        #expect(ScheduleStore(remoteURL: url, directory: directory).mayBeStale())
+    }
+
+    @Test func neverStaleWithoutRemote() {
+        let store = ScheduleStore(remoteURL: nil, directory: directory)
+        #expect(!store.mayBeStale(at: Date().addingTimeInterval(10 * ScheduleStore.staleAfter)))
+    }
+
     @Test func skipsCheckWithoutRemote() async {
         let store = ScheduleStore(remoteURL: nil, directory: directory)
         #expect(await store.checkForUpdates() == nil)
