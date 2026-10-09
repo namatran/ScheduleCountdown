@@ -19,7 +19,7 @@ struct MenuContent: View {
 
     var body: some View {
         @Bindable var state = state
-        let status = state.status
+        let status = state.menuStatus
 
         Text(headline(status))
 
@@ -66,13 +66,12 @@ struct MenuContent: View {
     private func blockRow(_ block: Block, status: DayStatus) -> some View {
         let times = "\(block.start.display)–\(block.end.display)"
             + (block.dismiss.map { " (out \($0.display))" } ?? "")
-        let end = block.effectiveEnd.date(on: state.now, calendar: .current)
 
         if block.id == status.currentBlock?.id {
             Button("▶  \(block.name)   \(times)") {}
         } else if block.id == status.nextBlock?.id {
             Button("→  \(block.name)   \(times)") {}
-        } else if end <= state.now {
+        } else if status.finishedBlocks.contains(block) {
             Text("     \(block.name)   \(times)")
         } else {
             Button("     \(block.name)   \(times)") {}

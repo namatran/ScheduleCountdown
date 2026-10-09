@@ -8,14 +8,23 @@ final class AppState {
     private(set) var now = Date()
 
     var lunch: LunchGroup {
-        didSet { defaults.set(lunch.rawValue, forKey: Keys.lunch) }
+        didSet {
+            defaults.set(lunch.rawValue, forKey: Keys.lunch)
+            refreshMenuStatus()
+        }
     }
     var showCountdownOutsideSchool: Bool {
         didSet { defaults.set(showCountdownOutsideSchool, forKey: Keys.outsideSchool) }
     }
     var editorMode: Bool {
-        didSet { defaults.set(editorMode, forKey: Keys.editorMode) }
+        didSet {
+            defaults.set(editorMode, forKey: Keys.editorMode)
+            refreshMenuStatus()
+        }
     }
+    /// What the dropdown shows. Unlike `status`, it's only reassigned when it changes (at a bell,
+    /// not every second), because re-rendering the menu rebuilds it and closes open submenus.
+    private(set) var menuStatus = DayStatus()
     /// Set for this launch when Settings is opened with ⌥ held, so the Editor mode switch appears.
     var revealEditorToggle = false
 
@@ -37,6 +46,7 @@ final class AppState {
         editorMode = defaults.bool(forKey: Keys.editorMode)
         clockOffset = Self.fakeClockOffset()
         now = Date().addingTimeInterval(clockOffset)
+        refreshMenuStatus()
     }
 
     /// Editors see their draft live; everyone else follows the published master.
@@ -73,6 +83,13 @@ final class AppState {
 
     private func tick() {
         now = Date().addingTimeInterval(clockOffset)
+        // Also picks up schedule downloads and editor changes within a second.
+        refreshMenuStatus()
+    }
+
+    private func refreshMenuStatus() {
+        let status = status
+        if status != menuStatus { menuStatus = status }
     }
 
     /// Debug aid: `SC_FAKE_NOW="2026-10-09 11:45"` makes the app run as if it were that moment.
