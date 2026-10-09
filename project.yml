@@ -29,7 +29,7 @@ targets:
         # Menu bar only: no Dock icon, no app menu.
         LSUIElement: true
         # Raw URL of the master schedule.json. Empty = use the bundled copy only.
-        ScheduleRemoteURL: ""
+        ScheduleRemoteURL: https://raw.githubusercontent.com/namatran/ScheduleCountdown/main/ScheduleCountdown/Resources/schedule.json
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.namtran.ScheduleCountdown

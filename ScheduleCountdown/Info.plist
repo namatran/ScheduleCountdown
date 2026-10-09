@@ -27,6 +27,6 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>ScheduleRemoteURL</key>
-	<string></string>
+	<string>https://raw.githubusercontent.com/namatran/ScheduleCountdown/main/ScheduleCountdown/Resources/schedule.json</string>
 </dict>
 </plist>
