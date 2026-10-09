@@ -4,3 +4,5 @@ ScheduleCountdown.xcodeproj/
 xcuserdata/
 build/
 dist/
+# Exported Sparkle EdDSA private key backups (keep in a password manager)
+sparkle_private_key*
