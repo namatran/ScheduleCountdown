@@ -10,9 +10,16 @@ A menu bar app for Klein High that counts down to the next bell. It knows the no
 
 1. Download `ScheduleCountdown.dmg` from the [latest release](https://github.com/namatran/ScheduleCountdown/releases/latest) and open it.
 2. Drag ScheduleCountdown onto the Applications folder next to it.
-3. Open it from Applications. The first time, macOS says it can't verify the developer: open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway**. You only do this once.
+3. Open it from Applications. The first time, macOS blocks it:
 
-Requires macOS 14 or later.
+   <img src="docs/images/not-opened.png" width="240" alt="“ScheduleCountdown” Not Opened: Apple could not verify it is free of malware">
+
+   That's expected. macOS shows this for any app whose developer doesn't pay Apple $99 a year for a signing certificate; it doesn't mean anything was found. Click **Done**, not Move to Trash.
+4. Open **System Settings → Privacy & Security**, scroll down to **Security**, and click **Open Anyway** next to “ScheduleCountdown” was blocked. If macOS asks again, click **Open Anyway** and enter your Mac password or use Touch ID.
+
+   <img src="docs/images/open-anyway.png" width="600" alt="Privacy & Security settings with the Open Anyway button for ScheduleCountdown">
+
+You only do this once. Requires macOS 14 or later.
 
 After that the app updates itself. It checks when it opens and once a day, and asks before installing; until you do, the menu shows **Update Available**. Updates don't need "Open Anyway" again.
 
