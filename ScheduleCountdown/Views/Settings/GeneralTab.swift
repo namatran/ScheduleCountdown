@@ -3,6 +3,7 @@ import SwiftUI
 
 struct GeneralTab: View {
     @Environment(AppState.self) private var state
+    @Environment(AppUpdater.self) private var updater
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var launchAtLoginError: String?
     @State private var exportError: String?
@@ -73,6 +74,8 @@ struct GeneralTab: View {
                 }
             }
 
+            appSection
+
             if state.revealEditorToggle || state.editorMode {
                 editorSection
             }
@@ -80,6 +83,39 @@ struct GeneralTab: View {
         .formStyle(.grouped)
         .frame(width: 460)
         .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var appSection: some View {
+        Section("App") {
+            LabeledContent("Version", value: Self.installedVersion)
+            if updater.isChecking {
+                LabeledContent("Latest version", value: "Checking…")
+            } else if let error = updater.lastError {
+                LabeledContent("Latest version") {
+                    Text("Couldn't check").foregroundStyle(.red)
+                }
+                Text(error).font(.caption).foregroundStyle(.red)
+            } else if let version = updater.availableVersion {
+                LabeledContent("Latest version") {
+                    Text("\(version) available").fontWeight(.semibold)
+                }
+            } else if updater.hasChecked {
+                LabeledContent("Latest version", value: "Up to date ✓")
+            }
+            LabeledContent("Last checked", value: updater.lastChecked
+                .map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Never")
+            Button(updater.availableVersion == nil ? "Check for App Updates" : "Install Update…") {
+                updater.check()
+            }
+            .disabled(!updater.canCheck)
+        }
+    }
+
+    private static var installedVersion: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info?["CFBundleVersion"] as? String ?? "?"
+        return "\(version) (\(build))"
     }
 
     @ViewBuilder

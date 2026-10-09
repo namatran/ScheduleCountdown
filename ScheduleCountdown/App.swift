@@ -30,6 +30,7 @@ struct ScheduleCountdownApp: App {
         Settings {
             SettingsView()
                 .environment(state)
+                .environment(updater)
         }
     }
 }
