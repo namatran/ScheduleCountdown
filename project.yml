@@ -22,6 +22,9 @@ targets:
     platform: macOS
     sources:
       - ScheduleCountdown
+      # Shown in Settings → What's New.
+      - path: CHANGELOG.md
+        buildPhase: resources
     dependencies:
       - package: Sparkle
     info:

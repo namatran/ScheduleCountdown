@@ -8,6 +8,7 @@ struct GeneralTab: View {
     @State private var launchAtLoginError: String?
     @State private var exportError: String?
     @State private var checkResult: ScheduleStore.CheckResult?
+    @State private var showWhatsNew = false
 
     private var showCheckResult: Binding<Bool> {
         Binding(get: { checkResult != nil }, set: { if !$0 { checkResult = nil } })
@@ -104,11 +105,15 @@ struct GeneralTab: View {
             }
             LabeledContent("Last checked", value: updater.lastChecked
                 .map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Never")
-            Button(updater.availableVersion == nil ? "Check for App Updates" : "Install Update…") {
-                updater.check()
+            HStack {
+                Button(updater.availableVersion == nil ? "Check for App Updates" : "Install Update…") {
+                    updater.check()
+                }
+                .disabled(!updater.canCheck)
+                Button("What's New…") { showWhatsNew = true }
             }
-            .disabled(!updater.canCheck)
         }
+        .sheet(isPresented: $showWhatsNew) { WhatsNewView() }
     }
 
     private static var installedVersion: String {
