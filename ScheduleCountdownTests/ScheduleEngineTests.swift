@@ -126,6 +126,18 @@ struct ScheduleEngineTests {
         #expect(s.nextBell == nil)
     }
 
+    @Test func finishedBlocksAreTheOnesAlreadyLeft() {
+        let s = engine().status(at: at(8, 10, 0), lunch: .c)
+        #expect(s.finishedBlocks.map(\.name) == ["1st", "2nd", "3rd"])
+    }
+
+    @Test func statusOnlyChangesAtBells() {
+        // The menu re-renders only when the status changes, so it must stay equal between bells.
+        let e = engine()
+        #expect(e.status(at: at(8, 10, 0), lunch: .c) == e.status(at: at(8, 10, 1), lunch: .c))
+        #expect(e.status(at: at(8, 10, 0), lunch: .c) != e.status(at: at(8, 10, 45), lunch: .c))
+    }
+
     // MARK: Alternate schedules
 
     @Test func jamboreeALunchHasPassingBeforeFifth() {

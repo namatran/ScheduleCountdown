@@ -9,6 +9,8 @@ struct DayStatus: Equatable {
     var currentBlock: Block?
     /// The next block that hasn't started yet.
     var nextBlock: Block?
+    /// Blocks you've already left (their end or dismiss bell has rung).
+    var finishedBlocks: [Block] = []
     /// Between the first and last bell of the day.
     var inSession = false
     /// The next bell today, if there is one left.
@@ -58,6 +60,7 @@ struct ScheduleEngine {
         var status = DayStatus(schedule: schedule, blocks: blocks)
         status.currentBlock = blocks.first { date($0.start) <= now && now < date($0.effectiveEnd) }
         status.nextBlock = blocks.first { date($0.start) > now }
+        status.finishedBlocks = blocks.filter { date($0.effectiveEnd) <= now }
         if let first = bells.first, let last = bells.last {
             status.inSession = first <= now && now < last
         }
