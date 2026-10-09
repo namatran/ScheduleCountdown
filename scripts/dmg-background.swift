@@ -51,10 +51,13 @@ func drawCentered(_ text: String, y: Double, font: NSFont, color: NSColor) {
     (text as NSString).draw(at: NSPoint(x: (size.width - textSize.width) / 2, y: 0), withAttributes: attributes)
     context.restoreGState()
 }
-drawCentered("Drag ScheduleCountdown into Applications", y: 300,
+drawCentered("Drag ScheduleCountdown into Applications", y: 292,
              font: .systemFont(ofSize: 17, weight: .semibold), color: NSColor(white: 0.2, alpha: 1))
-drawCentered("Then open it from Applications.", y: 328,
+drawCentered("Then open it from Applications.", y: 320,
              font: .systemFont(ofSize: 13), color: NSColor(white: 0.45, alpha: 1))
+// macOS blocks it on first open (ad-hoc signed); point at the way through.
+drawCentered("Blocked the first time? System Settings → Privacy & Security → Open Anyway", y: 342,
+             font: .systemFont(ofSize: 12), color: NSColor(white: 0.45, alpha: 1))
 
 NSGraphicsContext.restoreGraphicsState()
 try! rep.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: arguments[1]))
