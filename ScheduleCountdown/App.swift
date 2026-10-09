@@ -23,8 +23,7 @@ struct ScheduleCountdownApp: App {
         .menuBarExtraStyle(.menu)
 
         Settings {
-            Text("Settings")
-                .padding()
+            SettingsView()
                 .environment(state)
         }
     }
