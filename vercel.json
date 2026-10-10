@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "cd web && npm test --silent && ./build.sh ../build/web",
+  "outputDirectory": "build/web"
+}
