@@ -196,6 +196,12 @@ function setupBriefMemory() {
   const brief = $("brief");
   brief.open = false;
   compact.addEventListener("change", updateBriefMode);
+
+  // On a wide screen the schedule only closes from its button; on a narrow one, tapping outside closes it too.
+  const sheet = $("schedule");
+  const sheetType = () => { sheet.popover = compact.matches ? "auto" : "manual"; };
+  sheetType();
+  compact.addEventListener("change", sheetType);
   let resizeTimer;
   addEventListener("resize", () => {
     clearTimeout(resizeTimer);
