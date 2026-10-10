@@ -87,6 +87,17 @@ button { font: inherit; color: inherit; }
 .corner.left > .pill { position: absolute; left: 24px; bottom: 24px; }
 .corner.right { right: 24px; }
 
+.disclaimer {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -411,6 +422,7 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   .hero { padding-bottom: 96px; }
   .corner.left { left: 16px; }
   .corner.right { right: 16px; }
+  .disclaimer { top: 12px; right: 16px; }
   .corner.right .pill { display: none; }
   .long { display: none; }
   .cap { text-transform: capitalize; }
