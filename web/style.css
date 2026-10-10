@@ -286,16 +286,14 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
 
 .brief summary::-webkit-details-marker { display: none; }
 
-/* Wide but short screens: the open list can't fit under a centred countdown, so it opens
-   as a card over it instead (and starts closed, see setupBriefMemory). */
-@media (min-width: 901px) and (max-height: 800px) {
-  .brief[open] {
-    padding: 0 16px 4px;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    background: var(--surface);
-    box-shadow: var(--shadow);
-  }
+/* Wide screens too short for the open list to clear the countdown (app.js adds .brief-card):
+   it opens as a card over the countdown instead. */
+.brief-card .brief[open] {
+  padding: 0 16px 4px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 

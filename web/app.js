@@ -79,6 +79,8 @@ function headline(st, at) {
   };
 }
 
+let lastLayout = "";
+
 function render() {
   if (!master) return;
   const at = now();
@@ -90,6 +92,9 @@ function render() {
   setText($("countdown"), clock);
   setText($("caption"), head.caption ?? "");
   $("countdown").classList.toggle("idle", !!head.idle);
+  // The Brief only needs re-measuring when what's above it changes size (other than on resize).
+  const layout = `${head.idle}|${head.eyebrow}|${head.caption}`;
+  if (layout !== lastLayout) { lastLayout = layout; updateBriefMode(); }
   document.title = head.target ? `${clock} · ${head.eyebrow}` : "Bell Countdown";
 
   for (const button of document.querySelectorAll("[data-lunch]")) {
@@ -150,26 +155,56 @@ async function loadBriefs() {
 
 // On a wide screen the Brief is an open bar at the bottom whose open/closed choice is remembered.
 // On a narrow one it's a pill that opens a card, like View schedule, and starts closed.
-// On a wide but short one it stays a bar but starts closed and opens as a card over the countdown;
-// that choice isn't remembered, so it doesn't change the tall-screen one.
+// On a wide screen too short for the open bar to clear the countdown, it stays a bar but starts
+// closed and opens as a card over the countdown (not remembered, so it doesn't change the tall-screen choice).
 const compact = matchMedia("(max-width: 900px)");
-const short = matchMedia("(max-height: 800px)");
+const hero = document.querySelector(".hero");
+let cardMode = false;
+let measured = false;
+
+const overlay = () => compact.matches || cardMode;
+
+/// Whether the open bar would sit clear of the caption, measured with a hidden copy.
+function briefFits() {
+  const copy = $("brief").cloneNode(true);
+  copy.removeAttribute("id");
+  copy.open = true;
+  copy.style.visibility = "hidden";
+  hero.append(copy);
+  const room = hero.clientHeight - 24 - copy.offsetHeight - ($("caption").getBoundingClientRect().bottom - hero.getBoundingClientRect().top);
+  copy.remove();
+  return room >= 16;
+}
+
+function updateBriefMode() {
+  if (!master) return;
+  const card = !compact.matches && !briefFits();
+  if (measured && card === cardMode) return;
+  measured = true;
+  cardMode = card;
+  hero.classList.toggle("brief-card", card);
+  syncBrief();
+}
+
+function syncBrief() {
+  let remembered = true;
+  try { remembered = localStorage.getItem("briefOpen") !== "no"; } catch {}
+  $("brief").open = overlay() || !measured ? false : remembered;
+}
 
 function setupBriefMemory() {
   const brief = $("brief");
-  const overlay = () => compact.matches || short.matches;
-  const sync = () => {
-    let remembered = true;
-    try { remembered = localStorage.getItem("briefOpen") !== "no"; } catch {}
-    brief.open = overlay() ? false : remembered;
-  };
-  sync();
-  compact.addEventListener("change", sync);
-  short.addEventListener("change", sync);
+  brief.open = false;
+  compact.addEventListener("change", updateBriefMode);
+  let resizeTimer;
+  addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateBriefMode, 100);
+  });
 
   brief.addEventListener("toggle", () => {
     if (!overlay()) {
-      try { localStorage.setItem("briefOpen", brief.open ? "yes" : "no"); } catch {}
+      if (measured) try { localStorage.setItem("briefOpen", brief.open ? "yes" : "no"); } catch {}
     } else if (brief.open) {
       $("schedule").hidePopover?.();
     }
@@ -250,7 +285,7 @@ function tick() {
 async function start() {
   renderDevBar();
   setupBriefMemory();
-  loadBriefs().catch(() => setText($("briefs"), "Couldn't load the Bearkat Brief."));
+  loadBriefs().then(updateBriefMode).catch(() => setText($("briefs"), "Couldn't load the Bearkat Brief."));
   try {
     master = await (await fetch("schedule.json", { cache: "no-cache" })).json();
   } catch {
