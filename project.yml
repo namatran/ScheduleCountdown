@@ -37,8 +37,8 @@ targets:
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         # Menu bar only: no Dock icon, no app menu.
         LSUIElement: true
-        # Raw URL of the master schedule.json. Empty = use the bundled copy only.
-        ScheduleRemoteURL: https://raw.githubusercontent.com/namatran/ScheduleCountdown/main/ScheduleCountdown/Resources/schedule.json
+        # URL of the master schedule.json, served by the website (school Wi-Fi blocks GitHub). Empty = use the bundled copy only.
+        ScheduleRemoteURL: https://bell.namatran.com/schedule.json
         # Sparkle app updates. The appcast is uploaded with each GitHub Release (scripts/release.sh).
         SUFeedURL: https://github.com/namatran/ScheduleCountdown/releases/latest/download/appcast.xml
         SUPublicEDKey: t1H0D/iH7ZbV3Tmidu/ERxWwgVyzUTRrEroC1B372hg=
