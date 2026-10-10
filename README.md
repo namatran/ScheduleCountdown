@@ -1,6 +1,8 @@
 # ScheduleCountdown
 
-A menu bar app for Klein High that counts down to the next bell. It knows the normal bell schedule, alternate schedules (Jamboree, Pep Rally, …), and A / B / C lunch.
+A countdown to the next bell for Klein High, as a Mac menu bar app and a website, [bell.namatran.com](https://bell.namatran.com) (for Chromebooks and everyone else). Both know the normal bell schedule, alternate schedules (Jamboree, Pep Rally, …), and A / B / C lunch, and read the same schedule file.
+
+On the Mac:
 
 - The menu bar shows the countdown (`12:03`); before school, after school and on days off it shows a bell.
 - Click it for the current period (or Passing), today's blocks for your lunch, the lunch picker, and today's schedule name.
@@ -33,14 +35,22 @@ Everything lives in one file, [`ScheduleCountdown/Resources/schedule.json`](Sche
 - **calendar**: days (or date ranges) that use an alternate schedule, or `"scheduleID": null` for no school.
 - Weekdays not in the calendar use `defaultScheduleID`; weekends are off.
 
-The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` is set, every copy also downloads the file on launch and every 6 hours, so everyone gets schedule changes without reinstalling. It keeps the last good copy for when it's offline.
+The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` is set, every copy also downloads the file on launch and every 6 hours, so everyone gets schedule changes without reinstalling. It keeps the last good copy for when it's offline. It downloads from the website (`bell.namatran.com/schedule.json`) rather than GitHub, because school Wi-Fi blocks GitHub. The website updates about a minute after each push.
 
 ### Editing (editor mode)
 
 1. Hold **⌥ Option** while clicking **Settings…** and turn on **Editor mode**. The Schedules and Calendar tabs appear, and this Mac follows your draft.
 2. Edit schedules (Duplicate is handy for a new alternate schedule) and assign days in Calendar.
 3. Click **Export Master File…** and save over `ScheduleCountdown/Resources/schedule.json`.
-4. Commit and push. Everyone's app picks it up within 6 hours (or on **Check for Schedule Updates**).
+4. Commit and push. The website has it in about a minute, and everyone's app within 6 hours (or on **Check for Schedule Updates**).
+
+## Website
+
+The site lives in [`web/`](web/): plain HTML, CSS and JavaScript, no framework. `engine.js` is a copy of the app's schedule logic, with its own tests.
+
+- **Weekly Brief:** paste each week's link at the top of [`web/briefs.txt`](web/briefs.txt) and push. The site shows the newest 3.
+- **Publishing:** Vercel (project `bell-countdown`) builds it on every push to `main` that touches `web/`, `schedule.json` or `docs/images`; see [`vercel.json`](vercel.json). It runs the tests first, and a failing test leaves the live site as it was. `web/deploy.sh` publishes by hand as a backup.
+- **Locally:** `cd web && npm test`, and `python3 -m http.server -d web` to view it. Add `?now=2026-10-12T11:45` to the URL to see any moment (Klein time); a bar of shortcuts appears at the top.
 
 ## Development
 
