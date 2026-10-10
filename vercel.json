@@ -2,5 +2,6 @@
   "framework": null,
   "installCommand": "",
   "buildCommand": "cd web && npm test --silent && ./build.sh ../build/web",
-  "outputDirectory": "build/web"
+  "outputDirectory": "build/web",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- web ScheduleCountdown/Resources/schedule.json docs/images vercel.json"
 }
