@@ -35,7 +35,7 @@ Everything lives in one file, [`ScheduleCountdown/Resources/schedule.json`](Sche
 - **calendar**: days (or date ranges) that use an alternate schedule, or `"scheduleID": null` for no school.
 - Weekdays not in the calendar use `defaultScheduleID`; weekends are off.
 
-The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` is set, every copy also downloads the file on launch and every 6 hours, so everyone gets schedule changes without reinstalling. It keeps the last good copy for when it's offline. It downloads from the website (`bell.namatran.com/schedule.json`) rather than GitHub, because school Wi-Fi blocks GitHub. The website updates about a minute after each push.
+The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` is set, every copy also downloads the file on launch and every 6 hours, so everyone gets schedule changes without reinstalling. It keeps the last good copy for when it's offline. The website can't do the same, because school Chromebooks block GitHub, so it serves its own copy, updated about a minute after each push.
 
 ### Editing (editor mode)
 
