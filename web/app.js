@@ -150,20 +150,25 @@ async function loadBriefs() {
 
 // On a wide screen the Brief is an open bar at the bottom whose open/closed choice is remembered.
 // On a narrow one it's a pill that opens a card, like View schedule, and starts closed.
+// On a wide but short one it stays a bar but starts closed and opens as a card over the countdown;
+// that choice isn't remembered, so it doesn't change the tall-screen one.
 const compact = matchMedia("(max-width: 900px)");
+const short = matchMedia("(max-height: 800px)");
 
 function setupBriefMemory() {
   const brief = $("brief");
+  const overlay = () => compact.matches || short.matches;
   const sync = () => {
     let remembered = true;
     try { remembered = localStorage.getItem("briefOpen") !== "no"; } catch {}
-    brief.open = compact.matches ? false : remembered;
+    brief.open = overlay() ? false : remembered;
   };
   sync();
   compact.addEventListener("change", sync);
+  short.addEventListener("change", sync);
 
   brief.addEventListener("toggle", () => {
-    if (!compact.matches) {
+    if (!overlay()) {
       try { localStorage.setItem("briefOpen", brief.open ? "yes" : "no"); } catch {}
     } else if (brief.open) {
       $("schedule").hidePopover?.();
@@ -172,10 +177,10 @@ function setupBriefMemory() {
 
   // Like a popover: tap outside or press Escape to close the card.
   document.addEventListener("pointerdown", (e) => {
-    if (compact.matches && brief.open && !brief.contains(e.target)) brief.open = false;
+    if (overlay() && brief.open && !brief.contains(e.target)) brief.open = false;
   });
   document.addEventListener("keydown", (e) => {
-    if (compact.matches && brief.open && e.key === "Escape") brief.open = false;
+    if (overlay() && brief.open && e.key === "Escape") brief.open = false;
   });
 }
 
