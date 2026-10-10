@@ -1,7 +1,11 @@
+import { inject } from '@vercel/analytics';
 import {
   LUNCHES, ZONE, status, nextSchoolBell, instantAt, addDays, weekday,
   minutes, display, effectiveEnd, blocksFor, formatCountdown,
 } from "./engine.js";
+
+// Initialize Vercel Web Analytics
+inject();
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
