@@ -8,7 +8,7 @@ Menu bar countdown to the next bell, for Klein High students. @README.md covers 
 - XcodeGen: `project.yml` is the source of truth; the `.xcodeproj` is generated and not committed
 - Sparkle 2 (SPM, pinned in `project.yml`) for app updates: EdDSA-signed, and the app is ad-hoc code signed because there's no paid Apple account
 - Swift Testing (`@Test`, `#expect`) in `ScheduleCountdownTests/`
-- No backend: the schedule is `schedule.json` on `main`, served by raw.githubusercontent.com; app updates are GitHub Releases
+- No backend: the schedule is `schedule.json` on `main`, served by bell.namatran.com (Vercel builds `web/` on every push; raw.githubusercontent.com is blocked at school); app updates are GitHub Releases
 
 ## Preferences
 
