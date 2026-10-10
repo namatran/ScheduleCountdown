@@ -5,6 +5,11 @@
       "note" : "Homecoming",
       "scheduleID" : "jamboree",
       "start" : "2026-10-09"
+    },
+    {
+      "end" : "2026-10-16",
+      "note" : "Fall Break",
+      "start" : "2026-10-12"
     }
   ],
   "defaultScheduleID" : "normal",
@@ -325,6 +330,6 @@
       "name" : "Pep Rally"
     }
   ],
-  "updatedAt" : "2026-10-09T03:44:14Z",
+  "updatedAt" : "2026-10-10T19:28:32Z",
   "version" : 1
 }
