@@ -205,17 +205,18 @@ function setupBriefMemory() {
   brief.addEventListener("toggle", () => {
     if (!overlay()) {
       if (measured) try { localStorage.setItem("briefOpen", brief.open ? "yes" : "no"); } catch {}
-    } else if (brief.open) {
+    } else if (brief.open && compact.matches) {
       $("schedule").hidePopover?.();
     }
   });
 
-  // Like a popover: tap outside or press Escape to close the card.
+  // On a narrow screen it's like a popover: tap outside or press Escape to close the card.
+  // The short-screen card closes only from its header.
   document.addEventListener("pointerdown", (e) => {
-    if (overlay() && brief.open && !brief.contains(e.target)) brief.open = false;
+    if (compact.matches && brief.open && !brief.contains(e.target)) brief.open = false;
   });
   document.addEventListener("keydown", (e) => {
-    if (overlay() && brief.open && e.key === "Escape") brief.open = false;
+    if (compact.matches && brief.open && e.key === "Escape") brief.open = false;
   });
 }
 
