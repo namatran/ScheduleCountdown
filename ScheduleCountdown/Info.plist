@@ -33,6 +33,6 @@
 	<key>SUPublicEDKey</key>
 	<string>t1H0D/iH7ZbV3Tmidu/ERxWwgVyzUTRrEroC1B372hg=</string>
 	<key>ScheduleRemoteURL</key>
-	<string>https://bell.namatran.com/schedule.json</string>
+	<string>https://raw.githubusercontent.com/namatran/ScheduleCountdown/main/ScheduleCountdown/Resources/schedule.json</string>
 </dict>
 </plist>
