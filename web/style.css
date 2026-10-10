@@ -356,6 +356,8 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   font-size: 0.75rem;
 }
 
+.devbar[hidden] { display: none; }
+
 .devbar a {
   padding: 3px 8px;
   border-radius: 8px;
