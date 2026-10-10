@@ -67,6 +67,12 @@ button { font: inherit; color: inherit; }
   padding: 24px 16px 96px;
 }
 
+/* Wide but short screens (Chromebooks): the open Brief is ~190px tall, so the countdown
+   centres in the space above it instead of running into it. */
+@media (min-width: 901px) and (max-height: 800px) {
+  .hero:has(.brief[open]) { padding-bottom: 240px; }
+}
+
 .now { position: relative; text-align: center; }
 
 .eyebrow {
