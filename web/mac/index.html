@@ -25,6 +25,29 @@
     <p class="note">Download at home: school Wi-Fi blocks it. Needs macOS 14 or later.</p>
     </header>
 
+    <div class="mock" role="img" aria-label="The ScheduleCountdown menu open in the Mac menu bar, showing the time left in 3rd period and today's schedule">
+      <div class="mock-bar" aria-hidden="true">
+        <span class="mock-count" id="demo-count">5:00</span>
+        <span class="mock-clock">Fri 9:27 AM</span>
+      </div>
+      <div class="mock-menu" aria-hidden="true">
+        <div class="mock-row mock-head">3rd — until 9:51</div>
+        <hr>
+        <div class="mock-row mock-done">1st &nbsp; 7:15–8:03</div>
+        <div class="mock-row mock-done">2nd &nbsp; 8:09–8:57</div>
+        <div class="mock-row mock-now">▶ &nbsp;3rd &nbsp; 9:03–9:51</div>
+        <div class="mock-row mock-next">→ &nbsp;4th &nbsp; 9:57–10:45</div>
+        <div class="mock-row">Advisory &nbsp; 10:51–11:22</div>
+        <hr>
+        <div class="mock-row mock-split"><span>Lunch</span><span>A ›</span></div>
+        <hr>
+        <div class="mock-row mock-dim">Normal Schedule</div>
+        <hr>
+        <div class="mock-row">Settings…</div>
+        <div class="mock-row">Quit ScheduleCountdown</div>
+      </div>
+    </div>
+
     <h2>Installing</h2>
     <p class="lead">You only do this once.</p>
     <ol class="steps">
@@ -40,5 +63,18 @@
     </ol>
     <p class="note">Made by a Klein High student. Not an official Klein ISD site.</p>
   </main>
+  <script>
+    // Demo only: counts down from 5:00 over and over, like the real menu bar does.
+    (function () {
+      var el = document.getElementById("demo-count");
+      var length = 300, start = Date.now();
+      function tick() {
+        var left = length - Math.floor(((Date.now() - start) / 1000) % length);
+        el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+      }
+      tick();
+      setInterval(tick, 250);
+    })();
+  </script>
 </body>
 </html>

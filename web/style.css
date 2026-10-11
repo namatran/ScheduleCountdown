@@ -471,6 +471,51 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
 .page .intro { text-align: center; padding-top: 24px; }
 .page .intro .lead { margin-inline: auto; max-width: 34em; text-wrap: balance; }
 
+.mock {
+  margin: 48px auto 0;
+  width: 100%;
+  max-width: 420px;
+  padding: 0 0 28px;
+  border-radius: 16px;
+  background: linear-gradient(100deg, #b4c6f5 10%, #d8cfdf 50%, #f9d5a8 90%);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.mock-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 6px 14px;
+  background: rgb(255 255 255 / 0.55);
+  backdrop-filter: blur(12px);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.mock-count { font-variant-numeric: tabular-nums; padding: 0 6px; border-radius: 5px; background: rgb(0 0 0 / 0.12); }
+
+.mock-menu {
+  margin: 4px 14px 0 auto;
+  width: min(250px, calc(100% - 28px));
+  padding: 5px;
+  border-radius: 10px;
+  background: rgb(250 249 247 / 0.92);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.28), 0 0 0 0.5px rgb(0 0 0 / 0.15);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.mock-menu hr { border: 0; border-top: 1px solid rgb(0 0 0 / 0.1); margin: 4px 8px; }
+.mock-row { padding: 2px 10px; border-radius: 5px; }
+.mock-head { font-weight: 600; }
+.mock-done, .mock-dim { color: #9a959c; }
+.mock-now { background: var(--accent-2); color: #fff; }
+.mock-split { display: flex; justify-content: space-between; }
+
 .page .note { color: var(--muted); font-size: 0.8rem; margin: 14px 0 0; }
 
 .page h2 { margin: 56px 0 4px; font-size: 1.4rem; }
