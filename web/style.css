@@ -458,6 +458,7 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
 .download {
   display: inline-flex;
   align-items: center;
+  gap: 10px;
   height: 52px;
   padding: 0 26px;
   border-radius: 999px;
