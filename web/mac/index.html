@@ -28,7 +28,7 @@
     <div class="mock" role="img" aria-label="The ScheduleCountdown menu open in the Mac menu bar, showing the time left in 3rd period and today's schedule">
       <div class="mock-bar" aria-hidden="true">
         <span class="mock-count" id="demo-count">5:00</span>
-        <span class="mock-clock">Fri 9:27 AM</span>
+        <span class="mock-clock" id="demo-clock">Fri 9:46 AM</span>
       </div>
       <div class="mock-menu" aria-hidden="true">
         <div class="mock-row mock-head">3rd — until 9:51</div>
@@ -67,13 +67,16 @@
     <p class="note">Made by a Klein High student. Not an official Klein ISD site.</p>
   </main>
   <script>
-    // Demo only: counts down from 5:00 over and over, like the real menu bar does.
+    // Demo only: the bell is at 9:51, so the countdown runs 5:00 to 0:01 (clock 9:46 to 9:50), then repeats.
     (function () {
-      var el = document.getElementById("demo-count");
-      var length = 300, start = Date.now();
+      var count = document.getElementById("demo-count");
+      var clock = document.getElementById("demo-clock");
+      var length = 300, bell = 9 * 60 + 51, start = Date.now();
       function tick() {
         var left = length - Math.floor(((Date.now() - start) / 1000) % length);
-        el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+        var now = bell * 60 - left; // seconds since midnight
+        count.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+        clock.textContent = "Fri " + Math.floor(now / 3600) + ":" + String(Math.floor(now / 60) % 60).padStart(2, "0") + " AM";
       }
       tick();
       setInterval(tick, 250);
