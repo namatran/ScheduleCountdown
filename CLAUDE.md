@@ -14,11 +14,13 @@ Menu bar countdown to the next bell, for Klein High students. @README.md covers 
 
 - The users are high school students. Anything they read (UI text, CHANGELOG.md, release notes) is short and plain, without technical words.
 - Ask before publishing a release or changing anything on GitHub.
+- `main` is production: pushing it deploys the website and ships `schedule.json` to every installed app. Work on a branch and open a PR, check the Vercel preview first, and never push to `main` directly unless the user says it's urgent.
 
 ## Commands
 
 - `xcodegen generate`: after adding or removing files. Create files on disk, not with Xcode's New File.
 - `scripts/test.sh`: build and run the unit tests
+- `npm test` in `web/`: site tests plus a check of `schedule.json`. Run `node schedule-check.js` after editing the schedule.
 - `scripts/package.sh`: build `dist/ScheduleCountdown.zip` (for updates) and `.dmg` (for installs)
 - `scripts/release.sh <version>`, then `--publish <version>`: see README → Releasing
 
