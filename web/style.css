@@ -468,6 +468,9 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   text-decoration: none;
 }
 
+.page .intro { text-align: center; padding-top: 24px; }
+.page .intro .lead { margin-inline: auto; max-width: 34em; text-wrap: balance; }
+
 .page .note { color: var(--muted); font-size: 0.8rem; margin: 14px 0 0; }
 
 .page h2 { margin: 56px 0 4px; font-size: 1.4rem; }
