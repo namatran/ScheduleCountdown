@@ -17,16 +17,44 @@
   <main class="page">
     <a class="back" href="../">← Countdown</a>
 
-    <h1>The countdown, <span>in your menu bar.</span></h1>
+    <header class="intro">
+    <h1>The countdown in your <span>menu bar.</span></h1>
     <p class="lead">Always next to your clock. Click it for your period, today's schedule and your lunch. It updates itself.</p>
 
-    <a class="download" href="https://github.com/namatran/ScheduleCountdown/releases/latest/download/ScheduleCountdown.dmg">Download for Mac</a>
+    <a class="download" href="https://github.com/namatran/ScheduleCountdown/releases/latest/download/ScheduleCountdown.dmg"><svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></svg>Download for Mac</a>
     <p class="note">Download at home: school Wi-Fi blocks it. Needs macOS 14 or later.</p>
+    </header>
+
+    <div class="mock" role="img" aria-label="The ScheduleCountdown menu open in the Mac menu bar, showing the time left in 3rd period and today's schedule">
+      <div class="mock-bar" aria-hidden="true">
+        <span class="mock-count" id="demo-count">5:00</span>
+        <span class="mock-clock">Fri 9:27 AM</span>
+      </div>
+      <div class="mock-menu" aria-hidden="true">
+        <div class="mock-row mock-head">3rd — until 9:51</div>
+        <hr>
+        <div class="mock-row mock-done">1st &nbsp; 7:15–8:03</div>
+        <div class="mock-row mock-done">2nd &nbsp; 8:09–8:57</div>
+        <div class="mock-row mock-now">▶ &nbsp;3rd &nbsp; 9:03–9:51</div>
+        <div class="mock-row mock-next">→ &nbsp;4th &nbsp; 9:57–10:45</div>
+        <div class="mock-row">Advisory &nbsp; 10:51–11:22</div>
+        <hr>
+        <div class="mock-row mock-split"><span>Lunch</span><span>A ›</span></div>
+        <hr>
+        <div class="mock-row mock-dim">Normal Schedule</div>
+        <hr>
+        <div class="mock-row">Settings…</div>
+        <div class="mock-row">Quit ScheduleCountdown</div>
+      </div>
+    </div>
 
     <h2>Installing</h2>
     <p class="lead">You only do this once.</p>
     <ol class="steps">
-      <li>Open the download and drag ScheduleCountdown onto the Applications folder.</li>
+      <li>
+        Open the download, then drag ScheduleCountdown onto the Applications folder.
+        <img src="../images/drag-to-applications.png" width="480" alt="The download window with the ScheduleCountdown icon and an arrow pointing to the Applications folder">
+      </li>
       <li>
         Open it from Applications. The first time, your Mac blocks it. That's normal for apps that aren't from the App Store. Click <b>Done</b>, not Move to Trash.
         <img src="../images/not-opened.png" width="240" alt="“ScheduleCountdown” Not Opened message">
@@ -38,5 +66,18 @@
     </ol>
     <p class="note">Made by a Klein High student. Not an official Klein ISD site.</p>
   </main>
+  <script>
+    // Demo only: counts down from 5:00 over and over, like the real menu bar does.
+    (function () {
+      var el = document.getElementById("demo-count");
+      var length = 300, start = Date.now();
+      function tick() {
+        var left = length - Math.floor(((Date.now() - start) / 1000) % length);
+        el.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+      }
+      tick();
+      setInterval(tick, 250);
+    })();
+  </script>
 </body>
 </html>
