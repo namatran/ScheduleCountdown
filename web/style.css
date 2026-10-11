@@ -441,7 +441,7 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
 
 .page h1 {
   margin: 40px 0 8px;
-  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
@@ -459,16 +459,16 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 52px;
-  padding: 0 26px;
-  border-radius: 999px;
+  height: 56px;
+  padding: 0 32px;
+  border-radius: 12px;
   background: var(--gradient);
   color: #fff;
   font-weight: 600;
   text-decoration: none;
 }
 
-.page .note { color: var(--muted); font-size: 0.85rem; margin: 12px 0 0; }
+.page .note { color: var(--muted); font-size: 0.8rem; margin: 14px 0 0; }
 
 .page h2 { margin: 56px 0 4px; font-size: 1.4rem; }
 
