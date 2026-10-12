@@ -130,6 +130,9 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .pill, .lunch button, .download { transition-property: background-color, color, border-color; }
 }
+.theme-toggle { justify-content: center; width: 40px; padding: 0; }
+.theme-toggle[aria-pressed="true"] .moon, .theme-toggle:not([aria-pressed="true"]) .sun { display: none; }
+
 body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 .lunch {
@@ -427,7 +430,7 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   .corner.left { left: 16px; }
   .corner.right { right: 16px; }
   .disclaimer { top: 12px; right: 16px; }
-  .corner.right .pill { display: none; }
+  .mac-link { display: none; }
   .long { display: none; }
   .cap { text-transform: capitalize; }
   .sheet, .brief-body { inset: auto auto 76px 16px; }
