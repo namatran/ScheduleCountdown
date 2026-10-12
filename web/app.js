@@ -61,7 +61,12 @@ function applyTheme(theme) {
   syncThemeToggle();
 }
 
-themeToggle.addEventListener("click", () => applyTheme(currentTheme() === "dark" ? "light" : "dark"));
+// Only the toggle crossfades (see style.css); without view transitions it switches instantly.
+themeToggle.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  if (document.startViewTransition) document.startViewTransition(() => applyTheme(next));
+  else applyTheme(next);
+});
 darkDevice.addEventListener("change", syncThemeToggle);
 syncThemeToggle();
 

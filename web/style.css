@@ -133,6 +133,14 @@ button { font: inherit; color: inherit; }
 .theme-toggle { justify-content: center; width: 40px; padding: 0; }
 .theme-toggle[aria-pressed="true"] .moon, .theme-toggle:not([aria-pressed="true"]) .sun { display: none; }
 
+/* The toggle crossfades the whole page (app.js), including the countdown gradient and shadows,
+   which CSS transitions can't animate. Load and device changes switch instantly. Kept with
+   reduced motion: it's only a fade. */
+::view-transition-old(root), ::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: ease;
+}
+
 body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 .lunch {
