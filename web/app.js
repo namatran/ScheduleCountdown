@@ -37,6 +37,39 @@ for (const button of document.querySelectorAll("[data-lunch]")) {
   button.addEventListener("click", () => setLunch(button.dataset.lunch));
 }
 
+// --- Theme -----------------------------------------------------------------
+
+// The <head> script already applied a saved choice; with none, the page follows the device.
+const darkDevice = matchMedia("(prefers-color-scheme: dark)");
+const themeToggle = $("theme-toggle");
+const deviceTheme = () => (darkDevice.matches ? "dark" : "light");
+const currentTheme = () => (["light", "dark"].includes(document.documentElement.dataset.theme) ? document.documentElement.dataset.theme : deviceTheme());
+
+function syncThemeToggle() {
+  themeToggle.setAttribute("aria-pressed", String(currentTheme() === "dark"));
+}
+
+/// Saves the choice, or forgets it when it matches the device so the page follows the device again.
+function applyTheme(theme) {
+  if (theme === deviceTheme()) {
+    delete document.documentElement.dataset.theme;
+    try { localStorage.removeItem("theme"); } catch {}
+  } else {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem("theme", theme); } catch {}
+  }
+  syncThemeToggle();
+}
+
+// Only the toggle crossfades (see style.css); without view transitions it switches instantly.
+themeToggle.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  if (document.startViewTransition) document.startViewTransition(() => applyTheme(next));
+  else applyTheme(next);
+});
+darkDevice.addEventListener("change", syncThemeToggle);
+syncThemeToggle();
+
 // --- Countdown -----------------------------------------------------------
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
