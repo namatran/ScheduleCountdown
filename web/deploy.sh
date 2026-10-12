@@ -1,5 +1,5 @@
 #!/bin/sh
-# Publishes the site to bell.namatran.com by hand. Pushing to main does this automatically,
+# Publishes the site to khsbell.com by hand. Pushing to main does this automatically,
 # so this is only a backup. Run it from anywhere: `web/deploy.sh`.
 # You need to be logged in first (`vercel login`). The first run links the bell-countdown project.
 set -e
