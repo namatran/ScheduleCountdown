@@ -1,16 +1,20 @@
+/* Follows the device's light/dark setting; data-theme (set from the saved choice) overrides it. */
 :root {
-  --bg: #f4f2ee;
-  --surface: #fffdf9;
-  --ink: #1d1b1f;
-  --muted: #6f6a72;
-  --faint: #b9b3b0;
-  --line: #e2ddd6;
+  --bg: light-dark(#f4f2ee, #141316);
+  --surface: light-dark(#fffdf9, #1e1c21);
+  --ink: light-dark(#1d1b1f, #f1eee9);
+  --muted: light-dark(#6f6a72, #a39ea6);
+  --faint: light-dark(#b9b3b0, #57525a);
+  --line: light-dark(#e2ddd6, #2e2b31);
   --accent: #f08a1c;
-  --accent-2: #1c4fd1;
+  --accent-2: light-dark(#1c4fd1, #6f8ff5);
   --gradient: linear-gradient(100deg, var(--accent-2) 10%, #8a7a9a 50%, var(--accent) 90%);
-  --shadow: 0 12px 40px rgb(40 30 20 / 0.14);
-  color-scheme: light;
+  --shadow: 0 12px 40px light-dark(rgb(40 30 20 / 0.14), rgb(0 0 0 / 0.5));
+  color-scheme: light dark;
 }
+
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 * { box-sizing: border-box; }
 
@@ -471,7 +475,9 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
 .page .intro { text-align: center; padding-top: 24px; }
 .page .intro .lead { margin-inline: auto; max-width: 34em; text-wrap: balance; }
 
+/* A light macOS menu, so it stays light in dark mode (every light-dark() token resolves light inside). */
 .mock {
+  color-scheme: light;
   margin: 48px auto 0;
   width: 100%;
   max-width: 420px;
