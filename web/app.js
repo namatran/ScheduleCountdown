@@ -70,6 +70,30 @@ themeToggle.addEventListener("click", () => {
 darkDevice.addEventListener("change", syncThemeToggle);
 syncThemeToggle();
 
+// --- Bookmark tip ------------------------------------------------------------
+
+// Shown until it's hidden with × or the shortcut is pressed here. A bookmark made with the star
+// can't be detected, which is why the × is there.
+const bookmarkHint = $("bookmark-hint");
+
+function hideBookmarkHint() {
+  bookmarkHint.hidden = true;
+  try { localStorage.setItem("bookmarkHint", "no"); } catch {}
+}
+
+let hintDismissed = false;
+try { hintDismissed = localStorage.getItem("bookmarkHint") === "no"; } catch {}
+if (!hintDismissed) {
+  const mac = /mac/i.test(navigator.userAgentData?.platform ?? navigator.platform);
+  if (mac) bookmarkHint.querySelector(".mod").textContent = "⌘";
+  bookmarkHint.hidden = false;
+  bookmarkHint.querySelector("button").addEventListener("click", hideBookmarkHint);
+  // The browser still opens its own bookmark box; this only notices the keypress.
+  document.addEventListener("keydown", (e) => {
+    if ((mac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === "d" && !bookmarkHint.hidden) hideBookmarkHint();
+  });
+}
+
 // --- Countdown -----------------------------------------------------------
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
