@@ -1,6 +1,6 @@
 # ScheduleCountdown
 
-A countdown to the next bell for Klein High, as a Mac menu bar app and a website, [bell.namatran.com](https://bell.namatran.com) (for Chromebooks and everyone else). Both know the normal bell schedule, alternate schedules (Jamboree, Pep Rally, …), and A / B / C lunch, and read the same schedule file.
+A countdown to the next bell for Klein High, as a Mac menu bar app and a website, [khsbell.com](https://khsbell.com) (for Chromebooks and everyone else). Both know the normal bell schedule, alternate schedules (Jamboree, Pep Rally, …), and A / B / C lunch, and read the same schedule file.
 
 On the Mac:
 
