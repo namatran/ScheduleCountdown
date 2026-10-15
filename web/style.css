@@ -102,6 +102,55 @@ button { font: inherit; color: inherit; }
   text-align: right;
 }
 
+/* Bookmark tip: mirrors the disclaimer in the top-left. app.js shows it until it's dismissed. */
+.bookmark-hint {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.bookmark-hint[hidden] { display: none; }
+
+.bookmark-hint kbd {
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: inherit;
+}
+
+/* Small to look at, but a bigger target to tap. */
+.bookmark-hint button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin: -4px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bookmark-hint button:hover { color: var(--ink); }
+}
+
+/* Phones and tablets have no bookmark shortcut. */
+@media (max-width: 620px), (pointer: coarse) {
+  .bookmark-hint { display: none; }
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
