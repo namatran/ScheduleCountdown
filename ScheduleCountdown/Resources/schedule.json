@@ -10,6 +10,21 @@
       "end" : "2026-10-16",
       "note" : "Fall Break",
       "start" : "2026-10-12"
+    },
+    {
+      "end" : "2026-11-03",
+      "note" : "Election Day",
+      "start" : "2026-11-03"
+    },
+    {
+      "end" : "2026-11-27",
+      "note" : "Thanksgiving Break",
+      "start" : "2026-11-23"
+    },
+    {
+      "end" : "2027-01-01",
+      "note" : "Winter Break",
+      "start" : "2026-12-21"
     }
   ],
   "defaultScheduleID" : "normal",
