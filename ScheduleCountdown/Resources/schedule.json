@@ -12,6 +12,12 @@
       "start" : "2026-10-12"
     },
     {
+      "end" : "2026-10-21",
+      "note" : "PSAT",
+      "scheduleID" : "psat",
+      "start" : "2026-10-21"
+    },
+    {
       "end" : "2026-11-03",
       "note" : "Election Day",
       "start" : "2026-11-03"
@@ -343,8 +349,89 @@
       ],
       "id" : "pep-rally",
       "name" : "Pep Rally"
+    },
+    {
+      "bells" : [
+        {
+          "name" : "Release to testing rooms",
+          "time" : "07:09"
+        }
+      ],
+      "blocks" : [
+        {
+          "end" : "12:10",
+          "name" : "PSAT / Study Hall",
+          "start" : "07:15"
+        },
+        {
+          "dismiss" : "12:35",
+          "end" : "12:40",
+          "groups" : [
+            "A"
+          ],
+          "name" : "A Lunch",
+          "start" : "12:10"
+        },
+        {
+          "end" : "13:35",
+          "groups" : [
+            "A"
+          ],
+          "name" : "5th",
+          "start" : "12:40"
+        },
+        {
+          "end" : "12:40",
+          "groups" : [
+            "B"
+          ],
+          "name" : "5th",
+          "start" : "12:16"
+        },
+        {
+          "dismiss" : "13:05",
+          "end" : "13:10",
+          "groups" : [
+            "B"
+          ],
+          "name" : "B Lunch",
+          "start" : "12:40"
+        },
+        {
+          "end" : "13:35",
+          "groups" : [
+            "B"
+          ],
+          "name" : "5th",
+          "start" : "13:10"
+        },
+        {
+          "end" : "13:10",
+          "groups" : [
+            "C"
+          ],
+          "name" : "5th",
+          "start" : "12:16"
+        },
+        {
+          "dismiss" : "13:35",
+          "end" : "13:40",
+          "groups" : [
+            "C"
+          ],
+          "name" : "C Lunch",
+          "start" : "13:10"
+        },
+        {
+          "end" : "14:35",
+          "name" : "7th",
+          "start" : "13:41"
+        }
+      ],
+      "id" : "psat",
+      "name" : "PSAT"
     }
   ],
-  "updatedAt" : "2026-10-10T19:28:32Z",
+  "updatedAt" : "2026-10-18T19:00:00Z",
   "version" : 1
 }
