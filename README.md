@@ -50,7 +50,7 @@ The site lives in [`web/`](web/): plain HTML, CSS and JavaScript, no framework. 
 
 - **Weekly Brief:** paste each week's link at the top of [`web/briefs.txt`](web/briefs.txt) and push. The site shows the newest 3.
 - **Publishing:** Vercel (project `bell-countdown`) builds it on every push to `main` that touches `web/`, `schedule.json` or `docs/images`; see [`vercel.json`](vercel.json). It runs the tests first, and a failing test leaves the live site as it was. `web/deploy.sh` publishes by hand as a backup.
-- **Locally:** `cd web && npm test`, and `python3 -m http.server -d web` to view it. Add `?now=2026-10-12T11:45` to the URL to see any moment (Klein time); a bar of shortcuts appears at the top.
+- **Locally:** `cd web && npm test`, and `python3 -m http.server -d web` to view it. Add `?now=2026-10-19T11:45` to the URL to see any moment (Klein time); a bar of shortcuts appears at the top.
 
 ## Development
 

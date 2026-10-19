@@ -6,7 +6,7 @@ import {
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 
-// ?now=2026-10-12T11:45 runs the page as if it were that moment in Klein; the clock keeps ticking from there.
+// ?now=2026-10-19T11:45 runs the page as if it were that moment in Klein; the clock keeps ticking from there.
 const fakeNow = params.get("now")?.match(/^(\d{4}-\d{2}-\d{2})T(\d{1,2}):(\d{2})$/);
 const clockOffset = fakeNow ? instantAt(fakeNow[1], +fakeNow[2] * 60 + +fakeNow[3]) - Date.now() : 0;
 const now = () => Date.now() + clockOffset;
@@ -295,11 +295,11 @@ function renderDevBar() {
   if (!fakeNow) return;
   const presets = [
     ["Live", null],
-    ["Before school", "2026-10-12T06:55"],
-    ["1st", "2026-10-12T07:30"],
-    ["Passing", "2026-10-12T08:05"],
-    ["Lunch", "2026-10-12T11:55"],
-    ["After school", "2026-10-12T15:10"],
+    ["Before school", "2026-10-19T06:55"],
+    ["1st", "2026-10-19T07:30"],
+    ["Passing", "2026-10-19T08:05"],
+    ["Lunch", "2026-10-19T11:55"],
+    ["After school", "2026-10-19T15:10"],
     ["Weekend", "2026-10-10T10:00"],
     ["Jamboree", "2026-10-09T10:00"],
   ];
