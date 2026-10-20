@@ -9,7 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
-  <script>try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+  <script>
+    try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+    // iPads report "MacIntel" too; only they have a touchscreen.
+    if (/mac/i.test(navigator.userAgentData?.platform ?? navigator.platform) && navigator.maxTouchPoints < 2) document.documentElement.dataset.mac = "";
+  </script>
   <link rel="stylesheet" href="style.css">
   <script type="module" src="app.js"></script>
   <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>

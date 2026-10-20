@@ -171,6 +171,9 @@ button { font: inherit; color: inherit; }
 
 .pill:active, .lunch button:active, .download:active { scale: 0.97; }
 
+/* The Mac app is only offered on Macs (index.html flags them). */
+:root:not([data-mac]) .mac-link { display: none; }
+
 @media (hover: hover) and (pointer: fine) {
   .pill:hover { border-color: var(--faint); }
   .lunch button:not([aria-pressed="true"]):hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
@@ -480,7 +483,7 @@ body:has(.sheet:popover-open) [popovertarget="schedule"] { background: var(--ink
   @keyframes card-fade { from { opacity: 0; } }
 }
 
-/* Phones: one row. The pills lose their first word and the Mac app link goes (it's for Macs). */
+/* Phones: one row. The pills lose their first word and the Mac app link goes (no room). */
 
 @media (max-width: 620px) {
   .hero { padding-bottom: 96px; }
