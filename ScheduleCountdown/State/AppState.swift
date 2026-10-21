@@ -53,6 +53,8 @@ final class AppState {
 
     /// Editors see their draft live; everyone else follows the published master.
     var master: MasterFile { editorMode ? store.draft : store.published }
+    /// The master changed after the draft was started, so this Mac is missing those changes.
+    var draftIsOutdated: Bool { editorMode && store.draftIsBehindPublished }
     var engine: ScheduleEngine { ScheduleEngine(master: master) }
     var status: DayStatus { engine.status(at: now, lunch: lunch) }
 

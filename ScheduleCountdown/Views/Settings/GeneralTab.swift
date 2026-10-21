@@ -138,8 +138,14 @@ struct GeneralTab: View {
                     Button("Discard Draft Changes", role: .destructive) { state.store.discardDraft() }
                         .disabled(!state.store.draftHasChanges)
                 }
-                Text(state.store.draftHasChanges ? "Draft has unpublished changes." : "Draft matches the published schedule.")
-                    .font(.caption).foregroundStyle(.secondary)
+                if state.draftIsOutdated {
+                    Label("The master schedule was updated \(formattedUpdatedAt(state.store.published.updatedAt)), after your draft was started, so this Mac is missing those changes. Discard your draft to get them. Exporting this draft would undo them.",
+                          systemImage: "exclamationmark.triangle")
+                        .font(.caption).foregroundStyle(.orange)
+                } else {
+                    Text(state.store.draftHasChanges ? "Draft has unpublished changes." : "Draft matches the published schedule.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 if let exportError {
                     Text(exportError).font(.caption).foregroundStyle(.red)
                 }

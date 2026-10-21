@@ -36,7 +36,12 @@ struct MenuContent: View {
             }
             .disabled(!updater.canCheck)
         }
-        if state.scheduleMayBeStale || updater.availableVersion != nil {
+        if state.draftIsOutdated {
+            Button(action: showSettings) {
+                Label("Draft is older than the master schedule…", systemImage: "exclamationmark.triangle")
+            }
+        }
+        if state.scheduleMayBeStale || updater.availableVersion != nil || state.draftIsOutdated {
             Divider()
         }
 

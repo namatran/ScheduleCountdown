@@ -122,6 +122,14 @@ final class ScheduleStore {
         return a != b
     }
 
+    /// True when the master was published after the draft was started, e.g. someone edited
+    /// schedule.json directly. Exporting this draft would undo those changes.
+    var draftIsBehindPublished: Bool {
+        guard let published = Self.date(published.updatedAt) else { return false }
+        guard let draft = Self.date(draft.updatedAt) else { return true }
+        return published > draft
+    }
+
     func discardDraft() {
         draft = published
     }
@@ -134,6 +142,10 @@ final class ScheduleStore {
 
     private func save(_ master: MasterFile, to url: URL) {
         try? master.encoded().write(to: url, options: .atomic)
+    }
+
+    private static func date(_ raw: String?) -> Date? {
+        raw.flatMap { ISO8601DateFormatter().date(from: $0) }
     }
 
     private static func load(_ url: URL) -> MasterFile? {
