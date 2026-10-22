@@ -99,6 +99,31 @@ struct ScheduleStoreTests {
         #expect(!store.draftHasChanges)
     }
 
+    @Test func draftFallsBehindWhenANewerMasterIsPublished() async throws {
+        var remote = pepRallyTomorrow()
+        remote.updatedAt = "2099-01-01T00:00:00Z"
+        let store = ScheduleStore(remoteURL: try remoteFile(remote), directory: directory)
+        #expect(!store.draftIsBehindPublished)
+
+        await store.checkForUpdates()
+        #expect(store.draftIsBehindPublished)
+
+        store.discardDraft()
+        #expect(!store.draftIsBehindPublished)
+    }
+
+    @Test func exportedDraftIsNotBehindItsOwnMaster() async throws {
+        let store = ScheduleStore(remoteURL: nil, directory: directory)
+        store.draft.calendar = pepRallyTomorrow().calendar
+        let url = directory.appendingPathComponent("schedule.json")
+        try store.exportDraft(to: url)
+
+        // Pushing the export publishes it; the draft it came from is up to date.
+        let pushed = ScheduleStore(remoteURL: url, directory: directory)
+        await pushed.checkForUpdates()
+        #expect(!pushed.draftIsBehindPublished)
+    }
+
     @Test func exportWritesALoadableMaster() throws {
         let store = ScheduleStore(remoteURL: nil, directory: directory)
         store.draft.calendar = pepRallyTomorrow().calendar

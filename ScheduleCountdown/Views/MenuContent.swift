@@ -3,11 +3,12 @@ import SwiftUI
 struct MenuBarLabel: View {
     let state: AppState
 
+    // The status item only shows one Text or Image, so the warning is a character in the text.
     var body: some View {
         if let title = state.menuBarTitle {
-            Text(title).monospacedDigit()
+            Text(state.draftIsOutdated ? "⚠︎ \(title)" : title).monospacedDigit()
         } else {
-            Image(systemName: "bell")
+            Image(systemName: state.draftIsOutdated ? "exclamationmark.triangle" : "bell")
         }
     }
 }
@@ -36,7 +37,12 @@ struct MenuContent: View {
             }
             .disabled(!updater.canCheck)
         }
-        if state.scheduleMayBeStale || updater.availableVersion != nil {
+        if state.draftIsOutdated {
+            Button(action: showSettings) {
+                Label("Draft is older than the master schedule…", systemImage: "exclamationmark.triangle")
+            }
+        }
+        if state.scheduleMayBeStale || updater.availableVersion != nil || state.draftIsOutdated {
             Divider()
         }
 
