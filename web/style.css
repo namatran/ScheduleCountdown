@@ -81,8 +81,6 @@ button { font: inherit; color: inherit; }
   margin: 1rem auto 0;
   max-width: 28rem;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
   color: var(--accent);
   font-size: clamp(0.95rem, 2vw, 1.1rem);
   font-weight: 600;
