@@ -23,12 +23,6 @@
       "start" : "2026-11-03"
     },
     {
-      "end" : "2026-11-04",
-      "note" : "Power outage, schedule probably inaccurate",
-      "scheduleID" : "normal",
-      "start" : "2026-11-04"
-    },
-    {
       "end" : "2026-11-27",
       "note" : "Thanksgiving Break",
       "start" : "2026-11-23"
