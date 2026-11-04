@@ -148,9 +148,13 @@ function render() {
   fadeText($("eyebrow"), head.eyebrow);
   setText($("countdown"), clock);
   setText($("caption"), head.caption ?? "");
+  // A calendar note on a school day ("Power outage…") goes right under the countdown.
+  const notice = st.schedule ? st.note ?? "" : "";
+  setText($("notice"), notice);
+  $("notice").hidden = !notice;
   $("countdown").classList.toggle("idle", !!head.idle);
   // The Brief only needs re-measuring when what's above it changes size (other than on resize).
-  const layout = `${head.idle}|${head.eyebrow}|${head.caption}`;
+  const layout = `${head.idle}|${head.eyebrow}|${head.caption}|${notice}`;
   if (layout !== lastLayout) { lastLayout = layout; updateBriefMode(); }
   document.title = head.target ? `${clock} · ${head.eyebrow}` : "Bell Countdown";
 

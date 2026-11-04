@@ -77,6 +77,19 @@ button { font: inherit; color: inherit; }
   font-size: clamp(1rem, 2.2vw, 1.25rem);
 }
 
+.notice {
+  margin: 1rem auto 0;
+  max-width: 28rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 600;
+}
+
+.notice[hidden] { display: none; }
+
 .corner {
   position: absolute;
   bottom: 24px;
