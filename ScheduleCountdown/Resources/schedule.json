@@ -23,6 +23,12 @@
       "start" : "2026-11-03"
     },
     {
+      "end" : "2026-11-05",
+      "note" : "Alternate schedule today",
+      "scheduleID" : "normal",
+      "start" : "2026-11-05"
+    },
+    {
       "end" : "2026-11-27",
       "note" : "Thanksgiving Break",
       "start" : "2026-11-23"
