@@ -148,7 +148,7 @@ function render() {
   fadeText($("eyebrow"), head.eyebrow);
   setText($("countdown"), clock);
   setText($("caption"), head.caption ?? "");
-  // A calendar note on a school day ("Power outage…") goes right under the countdown.
+  // A calendar note on a school day ("Power outage…") shows small at the top.
   const notice = st.schedule ? st.note ?? "" : "";
   setText($("notice"), notice);
   $("notice").hidden = !notice;
