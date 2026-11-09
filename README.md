@@ -49,6 +49,15 @@ The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` i
 The site lives in [`web/`](web/): plain HTML, CSS and JavaScript, no framework. `engine.js` is a copy of the app's schedule logic, with its own tests.
 
 - **Weekly Brief:** paste each week's link at the top of [`web/briefs.txt`](web/briefs.txt) and push. The site shows the newest 3.
+- **Bearkat Brief automation:** [`scripts/add-brief.py`](scripts/add-brief.py) reads the weekly email, opens a PR that adds the link, and merges it once the tests and the Vercel check pass (and only if the change is that one line). Needs `gh` logged in, plus a one-time setup:
+  1. Save the email account's login. Use an app password, not the real one:
+     `security add-generic-password -s schedulecountdown-brief -a YOU@example.com -w`
+  2. Create `~/.config/schedulecountdown/brief.json`:
+     `{"imap_host": "imap.example.com", "imap_user": "YOU@example.com", "sender": "the-brief-sender@example.com"}`
+  3. Try it without pushing: `scripts/add-brief.py --dry-run`. Add `--no-merge` to stop at the PR.
+  4. Schedule it with a LaunchAgent (`~/Library/LaunchAgents/`) that runs `scripts/add-brief.py` with `StartCalendarInterval` (for example Sunday 7 pm), then `launchctl load` it.
+
+  It works in its own clone at `~/.cache/schedulecountdown-brief`, so it never touches your working copy.
 - **Publishing:** Vercel (project `bell-countdown`) builds it on every push to `main` that touches `web/`, `schedule.json` or `docs/images`; see [`vercel.json`](vercel.json). It runs the tests first, and a failing test leaves the live site as it was. `web/deploy.sh` publishes by hand as a backup.
 - **Locally:** `cd web && npm test`, and `python3 -m http.server -d web` to view it. Add `?now=2026-10-19T11:45` to the URL to see any moment (Klein time); a bar of shortcuts appears at the top.
 
