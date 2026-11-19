@@ -1,24 +1,18 @@
 #!/usr/bin/env python3
-"""Add the newest Bearkat Brief to web/briefs.txt, straight from the email.
+"""Add a Bearkat Brief link to web/briefs.txt and open a pull request.
 
-Reads the school's weekly email over IMAP, finds the brief link, and opens a
-pull request that adds it. It merges the PR only when the change is exactly one
-new brief line, the site tests pass and every check on the PR is green.
+    scripts/add-brief.py --url LINK              # add it, open the PR, merge if safe
+    scripts/add-brief.py --url LINK --no-merge   # stop after opening the PR
+    scripts/add-brief.py --url LINK --dry-run    # do everything locally, push nothing
+
+It merges the PR only when the change is exactly one new brief line, the site
+tests pass and every check on the PR is green. Needs `gh` logged in.
 
 It works in its own clone (not your working copy), so it never touches
 uncommitted work.
-
-Setup is in README.md → "Bearkat Brief automation".
-
-    scripts/add-brief.py               # check the inbox, open the PR, merge if safe
-    scripts/add-brief.py --no-merge    # stop after opening the PR
-    scripts/add-brief.py --dry-run     # do everything locally, push nothing
-    scripts/add-brief.py --url URL     # skip the inbox and use this link
 """
 
 import argparse
-import email
-import imaplib
 import json
 import os
 import re
@@ -26,11 +20,8 @@ import subprocess
 import sys
 import time
 import urllib.request
-from datetime import date, timedelta
-from email.policy import default as default_policy
 from pathlib import Path
 
-CONFIG = Path(os.environ.get("SC_BRIEF_CONFIG", "~/.config/schedulecountdown/brief.json")).expanduser()
 CLONE = Path(os.environ.get("SC_BRIEF_CLONE", "~/.cache/schedulecountdown-brief")).expanduser()
 REPO = "namatran/ScheduleCountdown"
 
@@ -51,47 +42,6 @@ def notify(message):
         ["osascript", "-e", f'display notification {json.dumps(message)} with title "Bearkat Brief"'],
         capture_output=True,
     )
-
-
-def load_config():
-    if not CONFIG.exists():
-        raise SystemExit(f"Missing {CONFIG}. See README.md → Bearkat Brief automation.")
-    config = json.loads(CONFIG.read_text())
-    for key in ("imap_host", "imap_user", "sender"):
-        if not config.get(key):
-            raise SystemExit(f"{CONFIG} needs \"{key}\".")
-    return config
-
-
-def password(config):
-    service = config.get("keychain_service", "schedulecountdown-brief")
-    return run("security", "find-generic-password", "-s", service, "-a", config["imap_user"], "-w")
-
-
-def newest_link_from_inbox(config):
-    """Newest brief link in recent mail from the configured sender, or None."""
-    since = (date.today() - timedelta(days=10)).strftime("%d-%b-%Y")
-    mail = imaplib.IMAP4_SSL(config["imap_host"])
-    try:
-        mail.login(config["imap_user"], password(config))
-        mail.select("INBOX", readonly=True)
-        _, data = mail.search(None, "FROM", f'"{config["sender"]}"', "SINCE", since)
-        found = []
-        for number in data[0].split():
-            _, parts = mail.fetch(number, "(RFC822)")
-            message = email.message_from_bytes(parts[0][1], policy=default_policy)
-            for part in message.walk():
-                if part.get_content_type() in ("text/plain", "text/html"):
-                    found += LINK.findall(part.get_content())
-    finally:
-        try:
-            mail.logout()
-        except Exception:
-            pass
-    if not found:
-        return None
-    week, page = max(found, key=lambda match: int(match[0]))
-    return f"{BASE}brief-community-week-{week}-{page}"
 
 
 def page_is_brief(url):
@@ -127,13 +77,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dry-run", action="store_true", help="commit locally, push nothing")
     parser.add_argument("--no-merge", action="store_true", help="open the PR but leave it for you to merge")
-    parser.add_argument("--url", help="use this brief link instead of reading the inbox")
+    parser.add_argument("--url", required=True, help="the Bearkat Brief link")
     args = parser.parse_args()
 
-    url = args.url or newest_link_from_inbox(load_config())
-    if not url:
-        print("No brief email in the last 10 days.")
-        return
+    url = args.url.strip()
     match = LINK.fullmatch(url)
     if not match:
         raise SystemExit(f"Not a brief link: {url}")
@@ -170,7 +117,7 @@ def main():
     run("git", "push", "-q", "-u", "origin", branch, cwd=CLONE)
     body = (
         f"Adds the week {week} Bearkat Brief link to the top of `web/briefs.txt`. "
-        "The site shows the newest 3.\n\nOpened by `scripts/add-brief.py` from the weekly email."
+        "The site shows the newest 3.\n\nOpened by `scripts/add-brief.py`."
     )
     pr = run(
         "gh", "pr", "create", "--repo", REPO, "--base", "main", "--head", branch,
