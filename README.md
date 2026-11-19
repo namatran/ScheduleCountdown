@@ -49,14 +49,6 @@ The app ships with this file built in. If `ScheduleRemoteURL` in `project.yml` i
 The site lives in [`web/`](web/): plain HTML, CSS and JavaScript, no framework. `engine.js` is a copy of the app's schedule logic, with its own tests.
 
 - **Weekly Brief:** paste each week's link at the top of [`web/briefs.txt`](web/briefs.txt) and push. The site shows the newest 3.
-- **Add a brief with one command:** run it in a terminal (the Terminal app, from this project's folder), with the brief's link:
-
-  ```sh
-  cd ~/Developer/ScheduleCountdown
-  scripts/add-brief.py --url https://kleinisd.edurooms.com/newsletters/klein-high-school/newsletters/brief-community-week-14-123456
-  ```
-
-  It adds the link, runs the tests, opens a PR, and merges it once the tests and the Vercel check pass (only if the change is that one line). Needs `gh` logged in (`gh auth status` to check). Add `--no-merge` to stop at the PR, or `--dry-run` to try it without pushing. It works in its own clone at `~/.cache/schedulecountdown-brief`, so it never touches your working copy.
 - **Publishing:** Vercel (project `bell-countdown`) builds it on every push to `main` that touches `web/`, `schedule.json` or `docs/images`; see [`vercel.json`](vercel.json). It runs the tests first, and a failing test leaves the live site as it was. `web/deploy.sh` publishes by hand as a backup.
 - **Locally:** `cd web && npm test`, and `python3 -m http.server -d web` to view it. Add `?now=2026-10-19T11:45` to the URL to see any moment (Klein time); a bar of shortcuts appears at the top.
 
